@@ -8,45 +8,56 @@ namespace Yatzy_Test;
 
 public class GameTests
 {
+    private readonly Mock<IPlayer> _player1Mock;
+    private readonly Mock<IPlayer> _player2Mock;
+    public GameTests()
+    {
+        _player1Mock = new Mock<IPlayer>();
+        _player2Mock = new Mock<IPlayer>();
+    }
     [Fact]
     public void GivenPlayGameIsCalled_ThenGamePromptsPlayerToPlayAgain()
     {
         //Arrange
-        var playerMock = new Mock<IPlayer>();
-        var game = new Game(new[] { playerMock.Object});
-        playerMock.Setup(player => player.PlayAgain()).Verifiable();
+        var game = new Game(new[] { _player1Mock.Object});
+        _player1Mock.Setup(player => player.PlayAgain()).Verifiable();
         
         //Act
         game.PlayGame();
         
         //Assert
-        playerMock.Verify();
+        _player1Mock.Verify();
     }
 
     [Fact]
     public void PlayGame_DoesNotAskPlayerTwoToPlayAgain_WhenPlayerOneDoesNotPlayAgain()
     {
-        var player1Mock = new Mock<IPlayer>();
-        var player2Mock = new Mock<IPlayer>();
-        var game = new Game(new[] { player1Mock.Object, player2Mock.Object });
-        player1Mock.Setup(player => player.PlayAgain()).Returns(false);
+        var game = new Game(new[] { _player1Mock.Object, _player2Mock.Object });
+        _player1Mock.Setup(player => player.PlayAgain()).Returns(false);
 
         game.PlayGame();
 
-        player2Mock.Verify(player => player.PlayAgain(), Times.Never);
+        _player2Mock.Verify(player => player.PlayAgain(), Times.Never);
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenTheGameIsOver_ThenThePlayerWithTheMostPointsWillPrompted()
+    public void GivenPlayGameIsCalled_WhenTheGameIsOver_ThenThePlayerWithTheMostPointsWillBePrompted()
     {
-        var player1Mock = new Mock<IPlayer>();
-        var player2Mock = new Mock<IPlayer>();
-        var game = new Game(new[] { player1Mock.Object, player2Mock.Object });
-        player1Mock.Setup(player => player.TotalPoints).Returns(100);
-        player2Mock.Setup(player => player.TotalPoints).Returns(50);
-        game.PlayGame();
+        var game = new Game(new[] { _player1Mock.Object, _player2Mock.Object });
+        _player1Mock.Setup(player => player.TotalPoints).Returns(100);
+        _player2Mock.Setup(player => player.TotalPoints).Returns(50);
         
-        player1Mock.Verify();
+        _player1Mock.SetupSet(player => player.Winner = It.IsAny<bool>()).Verifiable();
+        
+        game.PlayGame();
+
+        _player1Mock.VerifySet(player => player.Winner = true);
     }
-    
+
+    [Fact]
+    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundWillCommence()
+    {
+        
+    }
+
 }

@@ -12,7 +12,7 @@ public class Game
     }
 
     public void PlayGame()
-    {
+    {   
         Winner().Winner = true;
         _players.All(player => player.PlayAgain());
     }
