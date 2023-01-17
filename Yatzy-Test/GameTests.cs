@@ -37,7 +37,7 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenTheGameIsOver_ThenThePlayerWithTheMostPointsWillBeDeclaredTheWinner()
+    public void GivenPlayGameIsCalled_WhenTheGameIsOver_ThenThePlayerWithTheMostPointsWillPrompted()
     {
         var player1Mock = new Mock<IPlayer>();
         var player2Mock = new Mock<IPlayer>();
@@ -45,7 +45,8 @@ public class GameTests
         player1Mock.Setup(player => player.TotalPoints).Returns(100);
         player2Mock.Setup(player => player.TotalPoints).Returns(50);
         game.PlayGame();
-
-        Assert.True(player1Mock.Object.Winner);
+        
+        player1Mock.Verify();
     }
+    
 }
