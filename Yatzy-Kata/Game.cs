@@ -15,7 +15,8 @@ public class Game
 
     public void PlayGame()
     {
-        _roundFactory.CreateRound();
+        var round = _roundFactory.CreateRound();
+        round.PlayRound();
         Winner().Winner = true;
         _players.All(player => player.PlayAgain());
     }

@@ -10,9 +10,11 @@ public class GameTests
     private readonly Mock<IRoundFactory> _roundFactoryMock;
     private readonly List<Mock<IPlayer>> _playerMocks;
     private readonly Game _game;
+    private readonly Mock<IRound> _roundMock;
 
     public GameTests()
     {
+        _roundMock = new Mock<IRound>();
         _roundFactoryMock = new Mock<IRoundFactory>();
         _playerMocks = new List<Mock<IPlayer>> { new(), new() };
         _game = new Game(_playerMocks.Select(playerMock => playerMock.Object), _roundFactoryMock.Object);
@@ -54,7 +56,7 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsCreated()
+    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsPrompted()
     {
         
         //Act
@@ -62,6 +64,19 @@ public class GameTests
 
         //Assert
         _roundFactoryMock.Verify(roundFactory => roundFactory.CreateRound(), Times.AtLeast(1));
+    }
+
+    [Fact]
+    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsCreated()
+    {
+        //Arrange
+        _roundFactoryMock.Setup(roundFactory => roundFactory.CreateRound()).Returns(_roundMock.Object);
+        
+        //Act
+        _game.PlayGame();
+        
+        //Assert
+        _roundMock.Verify(round => round.PlayRound(),Times.AtLeast(1));
     }
 
 }
