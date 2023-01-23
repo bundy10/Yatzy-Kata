@@ -82,12 +82,35 @@ public class GameTests
     [Fact]
     public void PlayGames_DoesNotAskToPlayAgain_WhenRoundsEndsWithAbandon()
     {
+        //Arrange
         _roundMock.Setup(round => round.PlayRound()).Returns(new RoundOver());
-
+        
+        //Act
         _game.PlayGame();
-
+        
+        //Assert
         _playerMocks
             .ForEach(playerMock => playerMock
                 .Verify(player => player.PlayAgain(), Times.Never));
+    }
+    
+    [Fact]
+    public void PlayGame_ContinuallyPlaysRounds_UntilPlayerDoesNotPlayAgain()
+    {
+        //Arrange
+        _playerMocks[1].SetupSequence(player => player.PlayAgain())
+            .Returns(true)
+            .Returns(false);
+        _playerMocks[0]
+            .SetupSequence(player => player.PlayAgain())
+            .Returns(true)
+            .Returns(true);
+        
+        //Act
+        _game.PlayGame();
+        
+        //Assert
+        var expectedRoundCount = 2;
+        _roundMock.Verify(round => round.PlayRound(), Times.Exactly(expectedRoundCount));
     }
 }

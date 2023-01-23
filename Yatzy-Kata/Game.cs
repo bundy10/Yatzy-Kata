@@ -16,11 +16,14 @@ public class Game
 
     public void PlayGame()
     {
-        var round = _roundFactory.CreateRound();
-        var roundOutcome = round.PlayRound();
-        if (roundOutcome is RoundOver) return;
-        Winner().Winner = true;
-        _players.All(player => player.PlayAgain());
+        do
+        {
+            var round = _roundFactory.CreateRound();
+            var roundOutcome = round.PlayRound();
+            if (roundOutcome is RoundOver) return;
+            Winner().Winner = true;
+            
+        } while (_players.All(player => player.PlayAgain()));
     }
 
     private IPlayer Winner() => _players.OrderByDescending(player => player.TotalPoints).First();
