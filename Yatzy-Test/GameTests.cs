@@ -17,6 +17,7 @@ public class GameTests
         _roundMock = new Mock<IRound>();
         _roundFactoryMock = new Mock<IRoundFactory>();
         _playerMocks = new List<Mock<IPlayer>> { new(), new() };
+        _roundFactoryMock.Setup(roundFactory => roundFactory.CreateRound()).Returns(_roundMock.Object);
         _game = new Game(_playerMocks.Select(playerMock => playerMock.Object), _roundFactoryMock.Object);
     }
     [Fact]
@@ -69,8 +70,6 @@ public class GameTests
     [Fact]
     public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsCreated()
     {
-        //Arrange
-        _roundFactoryMock.Setup(roundFactory => roundFactory.CreateRound()).Returns(_roundMock.Object);
         
         //Act
         _game.PlayGame();
