@@ -55,9 +55,18 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundWillCommence()
+    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsCreated()
     {
+        //Arrange
+        var roundFactoryMock = new Mock<IRoundFactory>();
+        var game = new Game(new[] { _player1Mock.Object, _player2Mock.Object }, roundFactoryMock.Object);
         
+        
+        //Act
+        game.PlayGame();
+
+        //Assert
+        roundFactoryMock.Verify(roundFactory => roundFactory.CreateRound(), Times.AtLeast(1));
     }
 
 }
