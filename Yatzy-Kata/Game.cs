@@ -1,4 +1,5 @@
 using Yatzy_Kata.Interfaces;
+using Yatzy_Kata.Outcomes;
 
 namespace Yatzy_Kata;
 
@@ -16,7 +17,8 @@ public class Game
     public void PlayGame()
     {
         var round = _roundFactory.CreateRound();
-        round.PlayRound();
+        var roundOutcome = round.PlayRound();
+        if (roundOutcome is RoundOver) return;
         Winner().Winner = true;
         _players.All(player => player.PlayAgain());
     }

@@ -1,6 +1,7 @@
 using Moq;
 using Yatzy_Kata;
 using Yatzy_Kata.Interfaces;
+using Yatzy_Kata.Outcomes;
 
 namespace Yatzy_Test;
 
@@ -78,4 +79,15 @@ public class GameTests
         _roundMock.Verify(round => round.PlayRound(),Times.AtLeast(1));
     }
 
+    [Fact]
+    public void PlayGames_DoesNotAskToPlayAgain_WhenRoundsEndsWithAbandon()
+    {
+        _roundMock.Setup(round => round.PlayRound()).Returns(new RoundOver());
+
+        _game.PlayGame();
+
+        _playerMocks
+            .ForEach(playerMock => playerMock
+                .Verify(player => player.PlayAgain(), Times.Never));
+    }
 }
