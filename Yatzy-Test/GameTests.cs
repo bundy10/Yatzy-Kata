@@ -69,7 +69,7 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsCreated()
+    public void GivenPlayGameIsCalled_WhenThereIsARoundPresent_ThenTheRoundIsPlayed()
     {
         
         //Act
