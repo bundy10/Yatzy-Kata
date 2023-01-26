@@ -15,18 +15,20 @@ public class RoundTests
     {
         _player1Mock = new Mock<IPlayer>();
         _player2Mock = new Mock<IPlayer>();
-        _round = new Round(new List<IPlayer>{_player1Mock.Object, _player2Mock.Object});
+        _round = new Round(new List<IPlayer> { _player1Mock.Object, _player2Mock.Object });
     }
+
     [Fact]
     public void GivenARound_WhenPlayRoundIsCalled_ThenPromptsPlayersForTheirScores()
     {
-        
+
         //Arrange
         _player1Mock.SetupGet(player => player.RoundScore).Returns(50);
         _player2Mock.SetupGet(player => player.RoundScore).Returns(30);
+
         //Act
         _round.PlayRound();
-        
+
         //Assert
         _player1Mock.VerifyGet(player => player.RoundScore);
         _player2Mock.VerifyGet(player => player.RoundScore);
