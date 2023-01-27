@@ -8,16 +8,16 @@ public class Game
 {
     private readonly IPlayer[] _players;
     private readonly IRoundFactory _roundFactory;
-    private PreviousRound _previousRoundResult;
+    private Records.Action<RoundOutcomes> _actionResult;
 
-    private bool PreviousRoundAbandoned => _previousRoundResult is Some<RoundOutcomes>(RoundOver _);
+    private bool PreviousRoundAbandoned => _actionResult is Some<RoundOutcomes>(RoundOver _);
 
 
     public Game(IEnumerable<IPlayer> players, IRoundFactory roundFactory)
     {
         _players = players.ToArray();
         _roundFactory = roundFactory;
-        _previousRoundResult = new NoPreviousRoundRecord();
+        _actionResult = new NoActionRecord<RoundOutcomes>();
     }
 
     public void PlayGame()
@@ -31,7 +31,7 @@ public class Game
     {
         var round = _roundFactory.CreateRound();
         var roundOutcome = round.PlayRound();
-        _previousRoundResult = new Some<RoundOutcomes>(roundOutcome);
+        _actionResult = new Some<RoundOutcomes>(roundOutcome);
     }
 
     private bool DoAllPlayersWantToPlayAgain() => _players.All(player => player.PlayAgain());
