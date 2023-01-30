@@ -1,3 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-Console.WriteLine("Hello, Worl!");
+string i = "asd asd";
+Console.WriteLine(i[3]);

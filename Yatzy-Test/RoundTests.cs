@@ -41,6 +41,19 @@ public class RoundTests
     }
 
     [Fact]
+    public void GivenARound_WhenPlayRoundIsCalled_ThenRoundCountIsIncrementedByOne()
+    {
+        //Arrange
+        _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1Mock.Object)).Returns(_turnMock.Object);
+        
+        //Act
+        _round.PlayRound();
+        
+        //Assert
+        Assert.Equal(1, _round.GetRoundCount());
+    }
+
+    [Fact]
     public void GivenARound_WhenGetTurnResultIsCalled_ThenATurnWillBePromptedForCreation()
     {
         //Arrange

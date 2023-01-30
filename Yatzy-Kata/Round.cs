@@ -8,6 +8,7 @@ public class Round : IRound
 {
     private readonly ITurnFactory _turnFactory;
     private readonly IPlayer[] _players;
+    private int _roundCount = 0;
 
     public Round(IEnumerable<IPlayer> players, ITurnFactory turnFactory)
     {
@@ -16,6 +17,7 @@ public class Round : IRound
     }
     public RoundOutcomes PlayRound()
     {
+        IncrementRound();
         var turnResult = GetTurnResults();
         return RoundWinner();
     }
@@ -33,4 +35,15 @@ public class Round : IRound
             Winner = _players.OrderByDescending(player => player.RoundScore).First()
         };
     }
+
+    private void IncrementRound()
+    {
+        _roundCount += 1;
+    }
+
+    public int GetRoundCount()
+    {
+        return _roundCount;
+    }
+
 }
