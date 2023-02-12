@@ -22,7 +22,7 @@ public class Round : IRound
         return RoundWinner();
     }
 
-    public DiceHandAndCategoryAtTurn GetTurnResults()
+    public DiceHandAndCategoryAtTurnEnd GetTurnResults()
     {
         var turn = _turnFactory.CreateTurn(_players[0]);
         return turn.PlayerTurn();

@@ -29,6 +29,7 @@ public class RoundTests
     {
 
         //Arrange
+        _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1Mock.Object)).Returns(_turnMock.Object);
         _player1Mock.SetupGet(player => player.RoundScore).Returns(50);
         _player2Mock.SetupGet(player => player.RoundScore).Returns(30);
 
@@ -72,7 +73,7 @@ public class RoundTests
         //Arrange
         _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1Mock.Object)).Returns(_turnMock.Object);
         _turnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new DiceHandAndCategoryAtTurn(new List<int> { 1, 2, 3, 4, 5, 6 }, "asd")).Verifiable();
+            .Returns(new DiceHandAndCategoryAtTurnEnd(new List<int> { 1, 2, 3, 4, 5, 6 }, new Category())).Verifiable();
 
         //Act
         _round.GetTurnResults();

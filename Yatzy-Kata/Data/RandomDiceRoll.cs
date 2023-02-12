@@ -8,6 +8,6 @@ public class RandomDiceRoll : IRandom
     
     public List<int> GetDiceNumbersBetweenRange()
     {
-        return new List<int> { _random.Next(1,6), _random.Next(1,6), _random.Next(1,6), _random.Next(1,6), _random.Next(1,6), _random.Next(1,6) };
+        return new List<int> { _random.Next(1,7), _random.Next(1,7), _random.Next(1,7), _random.Next(1,7), _random.Next(1,7), _random.Next(1,7) };
     }
 }

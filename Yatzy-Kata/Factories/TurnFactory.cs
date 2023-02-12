@@ -7,6 +7,6 @@ public class TurnFactory : ITurnFactory
 {
     public ITurn CreateTurn(IPlayer player)
     {
-        return new Turn(new RandomDiceRoll());
+        return new Turn(new RandomDiceRoll(), new Scorer());
     }
 }

@@ -6,14 +6,17 @@ namespace Yatzy_Kata;
 public class Turn : ITurn
 {
     private readonly TurnEventHandler _turnEventHandler;
+    private readonly IScorer _scorer;
 
-    public Turn(IRandom randomDiceRoll)
+    public Turn(IRandom randomDiceRoll, IScorer scorer)
     {
+        _scorer = scorer;
         _turnEventHandler = new TurnEventHandler(randomDiceRoll);
     }
     
-    public DiceHandAndCategoryAtTurn PlayerTurn()
+    public DiceHandAndCategoryAtTurnEnd PlayerTurn()
     {
-        return new DiceHandAndCategoryAtTurn(_turnEventHandler.RollDice(), "asd");
+        var diceRoll = _turnEventHandler.RollDice();
+        return _scorer.CalculateScore(diceRoll);
     }
 }
