@@ -13,11 +13,11 @@ public class ScorerTest
     }
 
     [Fact]
-    public void GivenCalculateScoreIsCalled_WhenFiveFoursAreRolled_ThenReturnYahtzee()
+    public void GivenCalculateScoreIsCalled_WhenAFullHouseIsRolled_ThenReturnFullHouses()
     {
         //Arrange
         var diceRoll = new List<int> { 4, 4, 4, 6, 6 };
-        var expectedScore = new DiceHandAndCategoryAtTurnEnd(diceRoll, new Yahtzee(diceRoll));
+        var expectedScore = new DiceHandAndCategoryAtTurnEnd(diceRoll, new FullHouse());
 
         //Act
         var actualScore = _scorer.CalculateScore(diceRoll);
@@ -25,4 +25,5 @@ public class ScorerTest
         //Assert
         Assert.Equal(expectedScore, actualScore);
     }
+    
 }

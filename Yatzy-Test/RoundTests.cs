@@ -73,7 +73,7 @@ public class RoundTests
         //Arrange
         _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1Mock.Object)).Returns(_turnMock.Object);
         _turnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new DiceHandAndCategoryAtTurnEnd(new List<int> { 1, 2, 3, 4, 5, 6 }, new Category())).Verifiable();
+            .Returns(new DiceHandAndCategoryAtTurnEnd(new List<int> { 1, 2, 3, 4, 5, 6 }, new Chance())).Verifiable();
 
         //Act
         _round.GetTurnResults();

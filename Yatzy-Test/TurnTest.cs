@@ -22,7 +22,7 @@ public class TurnTest
     public void GivenATurnIsCreated_WhenPlayerTurnIsCalled_ThenReturnDiceRolls()
     {
         //Arrange
-        var categoryDummy = new Category();
+        var categoryDummy = new Yahtzee();
         List<int> expectedDiceRolls = new List<int>() {1,2,3,4,5,6};
         _randomMock.Setup(diceRolls => diceRolls.GetDiceNumbersBetweenRange())
             .Returns(new List<int>() { 1, 2, 3, 4, 5, 6 });

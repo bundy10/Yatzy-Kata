@@ -51,12 +51,13 @@ internal sealed record FourOfAKind() : Category
     }
 }
 
-internal sealed record FullHouse() : Category
+public sealed record FullHouse() : Category
 {
     public override int CalculateScore(List<int> dice)
     {
-        return dice.GroupBy(ints => ints).Any(threeOfAKind => threeOfAKind.Count() == 3 && threeOfAKind.Count() == 2) ? 25 : 0;
+        return dice.GroupBy(ints => ints).Any(pair => pair.Count() == 2) && dice.GroupBy(ints => ints).Any(threeOfAKind => threeOfAKind.Count() == 3) ? 25 : 0;
     }
+
 }
 
 internal sealed record SmallStraight() : Category
