@@ -5,49 +5,49 @@ public abstract record Category()
     public abstract int CalculateScore(List<int> dice);
 }
 
-internal sealed record Aces() : Category
+public sealed record Aces() : Category
 {
     public override int CalculateScore(List<int> dice) => dice.Where(ones => ones == 1).Sum();
 }
 
-internal sealed record Twos() : Category
+public sealed record Twos() : Category
 {
     public override int CalculateScore(List<int> dice) => dice.Where(twos => twos == 2).Sum();
 }
 
-internal sealed record Threes() : Category
+public sealed record Threes() : Category
 {
     public override int CalculateScore(List<int> dice) => dice.Where(threes => threes == 3).Sum();
 }
 
-internal sealed record Fours() : Category
+public sealed record Fours() : Category
 {
     public override int CalculateScore(List<int> dice) => dice.Where(fours => fours == 4).Sum();
 }
 
-internal sealed record Fives() : Category
+public sealed record Fives() : Category
 {
     public override int CalculateScore(List<int> dice) => dice.Where(fives => fives == 5).Sum();
 }
 
-internal sealed record Sixes() : Category
+public sealed record Sixes() : Category
 {
     public override int CalculateScore(List<int> dice) => dice.Where(sixes => sixes == 6).Sum();
 }
 
-internal sealed record ThreeOfAKind() : Category
+public sealed record ThreeOfAKind() : Category
 {
     public override int CalculateScore(List<int> dice)
     {
-        return dice.GroupBy(ints => ints).Any(threeOfAKind => threeOfAKind.Count() == 3) ? dice.Sum() : 0;
+        return dice.GroupBy(ints => ints).Any(threeOfAKind => threeOfAKind.Count() >= 3) ? dice.Sum() : 0;
     }
 }
 
-internal sealed record FourOfAKind() : Category
+public sealed record FourOfAKind() : Category
 {
     public override int CalculateScore(List<int> dice)
     {
-        return dice.GroupBy(ints => ints).Any(fourOfAKind => fourOfAKind.Count() == 4) ? dice.Sum() : 0;
+        return dice.GroupBy(ints => ints).Any(fourOfAKind => fourOfAKind.Count() >= 4) ? dice.Sum() : 0;
     }
 }
 
@@ -60,7 +60,7 @@ public sealed record FullHouse() : Category
 
 }
 
-internal sealed record SmallStraight() : Category
+public sealed record SmallStraight() : Category
 {
     public override int CalculateScore(List<int> dice)
     {

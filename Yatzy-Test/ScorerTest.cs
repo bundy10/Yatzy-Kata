@@ -26,4 +26,24 @@ public class ScorerTest
         Assert.Equal(expectedScore, actualScore);
     }
     
+    [Fact]
+    public void GivenCalculateScoreIsCalled_WhenDicesAreRolledButMatchNoCategoriesLeftOver_ThenReturnAScoreOfZeroAndTakeTheLowestScoringCategoryPossible()
+    {
+        //Arrange
+        var diceRoll = new List<int> { 5, 5, 5, 5, 5 };
+        var expectedCategoryChosenAndDiceRoll = new DiceHandAndCategoryAtTurnEnd(diceRoll, new Aces());
+
+        //Act
+        _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll);
+        var categoryChosenAfterAllViableCategoriesAreGone = _scorer.CalculateScore(diceRoll);
+
+        //Assert
+        Assert.Equal(expectedCategoryChosenAndDiceRoll, categoryChosenAfterAllViableCategoriesAreGone );
+    }
+    
+    
 }
