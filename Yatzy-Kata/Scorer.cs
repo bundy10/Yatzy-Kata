@@ -5,7 +5,7 @@ namespace Yatzy_Kata;
 
 public class Scorer : IScorer
 {
-
+    private int _totalScore;
     private int _currentScore;
     private DiceHandAndCategoryAtTurnEnd? _currentDiceHandAndCategoryAtTurnEnd;
     private List<int> _currentDiceRoll;
@@ -33,6 +33,7 @@ public class Scorer : IScorer
             if (_remainingCategorys[i].CalculateScore(_currentDiceRoll) > 0)
             {
                 _currentScore = _remainingCategorys[i].CalculateScore(_currentDiceRoll);
+                _totalScore += _currentScore;
                 _currentDiceHandAndCategoryAtTurnEnd = new DiceHandAndCategoryAtTurnEnd(_currentDiceRoll, _remainingCategorys[i]);
                 _remainingCategorys.Remove(_remainingCategorys[i]);
                 break;
@@ -45,5 +46,10 @@ public class Scorer : IScorer
             _remainingCategorys.RemoveAt(0);
             
         }
+    }
+
+    public int GetTotalScore()
+    {
+        return _totalScore;
     }
 }

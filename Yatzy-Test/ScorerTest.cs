@@ -45,5 +45,19 @@ public class ScorerTest
         Assert.Equal(expectedCategoryChosenAndDiceRoll, categoryChosenAfterAllViableCategoriesAreGone );
     }
     
+    [Fact]
+    public void GivenCalculateScoreIsCalled_WhenDicesAreRolledAllFivesTwoConsecutiveTimes_ThenReturnATotalScoreOf75()
+    {
+        //Arrange
+        var diceRoll = new List<int> { 5, 5, 5, 5, 5 };
+
+        //Act
+        _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll);
+        var totalScore = _scorer.GetTotalScore();
+
+        //Assert
+        Assert.Equal(75, totalScore );
+    }
     
 }
