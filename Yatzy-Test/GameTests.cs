@@ -18,7 +18,8 @@ public class GameTests
         _roundMock = new Mock<IRound>();
         _roundFactoryMock = new Mock<IRoundFactory>();
         _playerMocks = new List<Mock<IPlayer>> { new(), new() };
-        _roundFactoryMock.Setup(roundFactory => roundFactory.CreateRound()).Returns(_roundMock.Object);
+        _roundFactoryMock.Setup(roundFactory => roundFactory.CreateRound(It.IsAny<IEnumerable<IPlayer>>())).Returns(_roundMock.Object);
+        _roundMock.Setup(round => round.PlayRound()).Returns(new RoundOutcomes());
         _game = new Game(_playerMocks.Select(playerMock => playerMock.Object), _roundFactoryMock.Object);
     }
     [Fact]
@@ -26,7 +27,7 @@ public class GameTests
     {
         //Arrange
         _playerMocks[0].Setup(player => player.PlayAgain()).Verifiable();
-        
+
         //Act
         _game.PlayGame();
         
@@ -65,7 +66,7 @@ public class GameTests
         _game.PlayGame();
 
         //Assert
-        _roundFactoryMock.Verify(roundFactory => roundFactory.CreateRound(), Times.AtLeast(1));
+        _roundFactoryMock.Verify(roundFactory => roundFactory.CreateRound(It.IsAny<IEnumerable<IPlayer>>()), Times.AtLeast(1));
     }
 
     [Fact]
