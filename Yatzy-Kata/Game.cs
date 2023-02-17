@@ -4,9 +4,9 @@ using Yatzy_Kata.Records;
 
 namespace Yatzy_Kata;
 
-public class Game
+public class Game : IGame
 {
-    private readonly IPlayer[] _players;
+    private readonly IEnumerable<IPlayer> _players;
     private readonly IRoundFactory _roundFactory;
     private Records.Action<RoundOutcomes> _actionResult;
 
@@ -15,7 +15,7 @@ public class Game
 
     public Game(IEnumerable<IPlayer> players, IRoundFactory roundFactory)
     {
-        _players = players.ToArray();
+        _players = players;
         _roundFactory = roundFactory;
         _actionResult = new NoActionRecord<RoundOutcomes>();
     }
@@ -29,7 +29,7 @@ public class Game
     
     private void PlayRound()
     {
-        var round = _roundFactory.CreateRound();
+        var round = _roundFactory.CreateRound(_players);
         var roundOutcome = round.PlayRound();
         _actionResult = new Some<RoundOutcomes>(roundOutcome);
     }
