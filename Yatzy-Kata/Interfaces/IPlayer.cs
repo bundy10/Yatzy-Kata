@@ -9,5 +9,6 @@ public interface IPlayer
     int RoundScore { get; set; }
     bool Winner { get; set; }
     bool PlayAgain();
-    
+    PlayerRecordHolder RecordHolder { get; set; }
+
 }
