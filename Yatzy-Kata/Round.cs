@@ -22,18 +22,35 @@ public class Round : IRound
         return RoundWinner();
     }
 
-    public DiceHandAndCategoryAtTurnEnd GetTurnResults()
+    public IEnumerable<DiceHandAndCategoryAtTurnEnd> GetTurnResults()
     {
-        var turn = _turnFactory.CreateTurn(_players[0]);
-        return turn.PlayerTurn();
+        var turnResults = new List<DiceHandAndCategoryAtTurnEnd>();
+        foreach (var player in _players)
+        {
+            var turn = _turnFactory.CreateTurn(player);
+            var playerTurnResult = turn.PlayerTurn();
+            turnResults.Add(playerTurnResult);
+        }
+        return turnResults;
     }
 
     private RoundOutcomes RoundWinner()
     {
-        return new RoundWinner
+        var highestScore = _players.Max(player => player.RoundScore);
+        var playersWithHighestScore = _players.Where(players => players.RoundScore == highestScore);
+
+        var highestScoringPlayers = playersWithHighestScore.ToList();
+        if (highestScoringPlayers.Count == 1)
         {
-            Winner = _players.OrderByDescending(player => player.RoundScore).First()
-        };
+            return new RoundWinner(highestScoringPlayers.Single().RoundScore, highestScoringPlayers.Single() );
+        }
+
+        if (highestScoringPlayers.Count > 1)
+        {
+            return new RoundTie(highestScoringPlayers.Single().RoundScore, highestScoringPlayers);
+        }
+        
+        return new RoundOver();
     }
 
     private void IncrementRound()
