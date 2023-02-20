@@ -32,6 +32,16 @@ public class PlayerRecordHolder
 
     public void SetTotalPoints(int roundScore)
     {
-        _totalPoints += _roundScore;
+        _totalPoints += roundScore;
+    }
+    
+    public int GetRoundScore()
+    {
+        return _roundScore;
+    }
+
+    public int GetTotalPoints()
+    {
+        return _totalPoints;
     }
 }
