@@ -38,7 +38,7 @@ public class Game : IGame
 
     private bool ShouldPlayAnotherRound() => !PreviousRoundAbandoned && DoAllPlayersWantToPlayAgain();
 
-    private IPlayer Winner() => _players.OrderByDescending(player => player.TotalPoints).First();
+    private IPlayer Winner() => _players.OrderByDescending(player => player.RecordHolder.GetTotalPoints()).First();
     
     
 }
