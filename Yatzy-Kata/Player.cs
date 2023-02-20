@@ -12,10 +12,9 @@ public class Player : IPlayer
         return false;
     }
     public PlayerRecordHolder RecordHolder { get; set; }
-    private PlayerRecordHolder _recordHolder;
 
     public Player()
     {
-        _recordHolder = new PlayerRecordHolder();
+        RecordHolder = new PlayerRecordHolder();
     }
 }
