@@ -7,9 +7,11 @@ public class Turn : ITurn
 {
     private readonly TurnEventHandler _turnEventHandler;
     private readonly IScorer _scorer;
+    private readonly IPlayer _player;
 
-    public Turn(IRandom randomDiceRoll, IScorer scorer)
+    public Turn(IRandom randomDiceRoll, IScorer scorer, IPlayer player)
     {
+        _player = player;
         _scorer = scorer;
         _turnEventHandler = new TurnEventHandler(randomDiceRoll);
     }
@@ -17,6 +19,6 @@ public class Turn : ITurn
     public DiceHandAndCategoryAtTurnEnd PlayerTurn()
     {
         var diceRoll = _turnEventHandler.RollDice();
-        return _scorer.CalculateScore(diceRoll);
+        return _scorer.CalculateScore(diceRoll, _player.RecordHolder.GetRemainingCategory());
     }
 }

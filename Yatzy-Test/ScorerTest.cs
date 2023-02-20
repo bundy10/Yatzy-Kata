@@ -6,10 +6,12 @@ namespace Yatzy_Test;
 public class ScorerTest
 {
     private readonly Scorer _scorer;
+    private readonly List<Category> _remainingCategories;
 
     public ScorerTest()
     {
         _scorer = new Scorer();
+        _remainingCategories = new List<Category>() { new Aces(), new Twos(), new Threes(), new Fours(), new Fives(), new Sixes(), new Chance(), new ThreeOfAKind(), new FourOfAKind(), new FullHouse(), new SmallStraight(), new LargeStraight(), new Yahtzee()};
     }
 
     [Fact]
@@ -20,7 +22,7 @@ public class ScorerTest
         var expectedScore = new DiceHandAndCategoryAtTurnEnd(diceRoll, new FullHouse());
 
         //Act
-        var actualScore = _scorer.CalculateScore(diceRoll);
+        var actualScore = _scorer.CalculateScore(diceRoll, _remainingCategories);
 
         //Assert
         Assert.Equal(expectedScore, actualScore);
@@ -34,12 +36,12 @@ public class ScorerTest
         var expectedCategoryChosenAndDiceRoll = new DiceHandAndCategoryAtTurnEnd(diceRoll, new Aces());
 
         //Act
-        _scorer.CalculateScore(diceRoll);
-        _scorer.CalculateScore(diceRoll);
-        _scorer.CalculateScore(diceRoll);
-        _scorer.CalculateScore(diceRoll);
-        _scorer.CalculateScore(diceRoll);
-        var categoryChosenAfterAllViableCategoriesAreGone = _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll, _remainingCategories);
+        _scorer.CalculateScore(diceRoll, _remainingCategories);
+        _scorer.CalculateScore(diceRoll, _remainingCategories);
+        _scorer.CalculateScore(diceRoll, _remainingCategories);
+        _scorer.CalculateScore(diceRoll, _remainingCategories);
+        var categoryChosenAfterAllViableCategoriesAreGone = _scorer.CalculateScore(diceRoll, _remainingCategories);
 
         //Assert
         Assert.Equal(expectedCategoryChosenAndDiceRoll, categoryChosenAfterAllViableCategoriesAreGone );
@@ -52,8 +54,8 @@ public class ScorerTest
         var diceRoll = new List<int> { 5, 5, 5, 5, 5 };
 
         //Act
-        _scorer.CalculateScore(diceRoll);
-        _scorer.CalculateScore(diceRoll);
+        _scorer.CalculateScore(diceRoll,_remainingCategories);
+        _scorer.CalculateScore(diceRoll, _remainingCategories);
         var totalScore = _scorer.GetTotalScore();
 
         //Assert

@@ -4,5 +4,5 @@ namespace Yatzy_Kata.Interfaces;
 
 public interface IScorer
 {
-    public DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll);
+    public DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> categories);
 }

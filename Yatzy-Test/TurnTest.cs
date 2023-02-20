@@ -15,7 +15,7 @@ public class TurnTest
     {
         _randomMock = new Mock<IRandom>();
         _scorer = new Mock<IScorer>();
-        _turn = new Turn(_randomMock.Object, _scorer.Object);
+        _turn = new Turn(_randomMock.Object, _scorer.Object, new Player());
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class TurnTest
         List<int> expectedDiceRolls = new List<int>() {1,2,3,4,5,6};
         _randomMock.Setup(diceRolls => diceRolls.GetDiceNumbersBetweenRange())
             .Returns(new List<int>() { 1, 2, 3, 4, 5, 6 });
-        _scorer.Setup(score => score.CalculateScore(It.IsAny<List<int>>()))
+        _scorer.Setup(score => score.CalculateScore(It.IsAny<List<int>>(), It.IsAny<List<Category>>()))
             .Returns(new DiceHandAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy));
         
         

@@ -13,6 +13,6 @@ public class TurnFactory : ITurnFactory
     }
     public ITurn CreateTurn(IPlayer player)
     {
-        return new Turn(_diceRoll, new Scorer());
+        return new Turn(_diceRoll, new Scorer(), player);
     }
 }
