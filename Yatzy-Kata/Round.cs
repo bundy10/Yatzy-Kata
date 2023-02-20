@@ -18,38 +18,38 @@ public class Round : IRound
     public RoundOutcomes PlayRound()
     {
         IncrementRound();
-        var turnResult = GetTurnResults();
+        GetTurnResults();
         return RoundWinner();
     }
 
-    public IEnumerable<DiceHandAndCategoryAtTurnEnd> GetTurnResults()
+    public void GetTurnResults()
     {
-        var turnResults = new List<DiceHandAndCategoryAtTurnEnd>();
         foreach (var player in _players)
         {
             var turn = _turnFactory.CreateTurn(player);
             var playerTurnResult = turn.PlayerTurn();
-            turnResults.Add(playerTurnResult);
+            player.RecordHolder.SetRoundScore(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
+            player.RecordHolder.SetTotalPoints(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
+            player.RecordHolder.RemoveUsedCategory(playerTurnResult.Category);
         }
-        return turnResults;
     }
 
     private RoundOutcomes RoundWinner()
     {
-        var highestScore = _players.Max(player => player.RoundScore);
-        var playersWithHighestScore = _players.Where(players => players.RoundScore == highestScore);
-
+        var highestScore = _players.Max(player => player.RecordHolder.GetRoundScore());
+        var playersWithHighestScore = _players.Where(players => players.RecordHolder.GetRoundScore() == highestScore);
         var highestScoringPlayers = playersWithHighestScore.ToList();
+        
         if (highestScoringPlayers.Count == 1)
         {
-            return new RoundWinner(highestScoringPlayers.Single().RoundScore, highestScoringPlayers.Single() );
+            return new RoundWinner(highestScore, highestScoringPlayers.Single() );
         }
 
-        if (highestScoringPlayers.Count > 1)
+        if  (highestScoringPlayers.Count > 1)
         {
-            return new RoundTie(highestScoringPlayers.Single().RoundScore, highestScoringPlayers);
+            return new RoundTie(highestScore, highestScoringPlayers);
         }
-        
+         
         return new RoundOver();
     }
 
