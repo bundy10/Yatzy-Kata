@@ -1,5 +1,6 @@
 using Moq;
 using Yatzy_Kata;
+using Yatzy_Kata.Data;
 using Yatzy_Kata.Interfaces;
 using Yatzy_Kata.Outcomes;
 
@@ -65,8 +66,18 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsPrompted()
+    public void GivenPlayGameIsCalled_WhenTheGameStarts_ThenARoundIsPromptedWhenPlayersHaveCategoriesAvailableAndPlayerWantsToPlay()
     {
+        //Arrange
+        _playerMocks[1].SetupSequence(player => player.PlayAgain())
+            .Returns(true)
+            .Returns(false);
+        _playerMocks[0]
+            .SetupSequence(player => player.PlayAgain())
+            .Returns(true)
+            .Returns(true);
+        _playerMocks[0].Setup(player => player.RecordHolder.GetRemainingCategory()).Returns(new List<Category>{new Aces(), new Chance()});
+        _playerMocks[1].Setup(player => player.RecordHolder.GetRemainingCategory()).Returns(new List<Category>{new Aces(), new Chance()});
         
         //Act
         _game.PlayGame();
@@ -76,29 +87,32 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhenThereIsARoundPresent_ThenTheRoundIsPlayed()
+    public void GivenPlayGameIsCalled_WhenThereIsNoRoundPresent_ThenNoRoundsWillBePlayed()
     {
         
         //Act
         _game.PlayGame();
         
         //Assert
-        _roundMock.Verify(round => round.PlayRound(),Times.AtLeast(1));
+        _roundMock.Verify(round => round.PlayRound(),Times.Never);
     }
 
     [Fact]
-    public void PlayGames_DoesNotAskToPlayAgain_WhenRoundsEndsWithAbandon()
+    public void GivenPlayGameIsCalled_WhenARoundEndsWithRoundOver_ThenPlayersWillNotGetAskedToPlayAnotherRound()
     {
         //Arrange
+        _playerMocks.ForEach(players =>
+        {
+            players.Setup(player => player.PlayAgain()).Returns(true);
+            players.Setup(player => player.RecordHolder.GetRemainingCategory()).Returns(new List<Category>{new Aces(), new Chance()});
+        });
         _roundMock.Setup(round => round.PlayRound()).Returns(new RoundOver());
         
         //Act
         _game.PlayGame();
         
         //Assert
-        _playerMocks
-            .ForEach(playerMock => playerMock
-                .Verify(player => player.PlayAgain(), Times.Never));
+        _playerMocks.ForEach(players => players.Verify(player => player.PlayAgain(), Times.Once));
     }
     
     [Fact]
@@ -112,12 +126,32 @@ public class GameTests
             .SetupSequence(player => player.PlayAgain())
             .Returns(true)
             .Returns(true);
+        _playerMocks[0].Setup(player => player.RecordHolder.GetRemainingCategory()).Returns(new List<Category>{new Aces(), new Chance()});
+        _playerMocks[1].Setup(player => player.RecordHolder.GetRemainingCategory()).Returns(new List<Category>{new Aces(), new Chance()});
         
         //Act
         _game.PlayGame();
         
         //Assert
-        var expectedRoundCount = 2;
+        var expectedRoundCount = 1;
         _roundMock.Verify(round => round.PlayRound(), Times.Exactly(expectedRoundCount));
+    }
+
+    [Fact]
+
+    public void PlayGame_ContinuallyPlaysRounds_UntilPlayersDoNotHaveAnyCategoriesLeft()
+    {
+        //Arrange
+        _playerMocks.ForEach(players =>
+        {
+            players.Setup(player => player.PlayAgain()).Returns(true);
+            players.Setup(player => player.RecordHolder.GetRemainingCategory()).Returns(new List<Category>(0));
+        });
+        
+        //Act
+        _game.PlayGame();
+        
+        //Assert
+        _roundMock.Verify(round => round.PlayRound(), Times.Never);
     }
 }

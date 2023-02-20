@@ -8,7 +8,6 @@ public class Round : IRound
 {
     private readonly ITurnFactory _turnFactory;
     private readonly IPlayer[] _players;
-    private int _roundCount = 0;
 
     public Round(IEnumerable<IPlayer> players, ITurnFactory turnFactory)
     {
@@ -17,12 +16,11 @@ public class Round : IRound
     }
     public RoundOutcomes PlayRound()
     {
-        IncrementRound();
         GetTurnResults();
         return RoundWinner();
     }
 
-    public void GetTurnResults()
+    private void GetTurnResults()
     {
         foreach (var player in _players)
         {
@@ -39,28 +37,12 @@ public class Round : IRound
         var highestScore = _players.Max(player => player.RecordHolder.GetRoundScore());
         var playersWithHighestScore = _players.Where(players => players.RecordHolder.GetRoundScore() == highestScore);
         var highestScoringPlayers = playersWithHighestScore.ToList();
-        
-        if (highestScoringPlayers.Count == 1)
+
+        return highestScoringPlayers.Count switch
         {
-            return new RoundWinner(highestScore, highestScoringPlayers.Single() );
-        }
-
-        if  (highestScoringPlayers.Count > 1)
-        {
-            return new RoundTie(highestScore, highestScoringPlayers);
-        }
-         
-        return new RoundOver();
+            1 => new RoundWinner(highestScore, highestScoringPlayers.Single()),
+            > 1 => new RoundTie(highestScore, highestScoringPlayers),
+            _ => new RoundOver()
+        };
     }
-
-    private void IncrementRound()
-    {
-        _roundCount += 1;
-    }
-
-    public int GetRoundCount()
-    {
-        return _roundCount;
-    }
-
 }

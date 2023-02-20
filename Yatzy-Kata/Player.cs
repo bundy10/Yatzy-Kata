@@ -7,7 +7,7 @@ public class Player : IPlayer
     public bool Winner { get; set; }
     public bool PlayAgain()
     {
-        return false;
+        return true;
     }
     public IPlayerRecordHolder RecordHolder { get; set; }
 

@@ -9,6 +9,7 @@ public class Game : IGame
     private readonly IEnumerable<IPlayer> _players;
     private readonly IRoundFactory _roundFactory;
     private Records.Action<RoundOutcomes> _actionResult;
+    private int _roundCount;
 
     private bool PreviousRoundAbandoned => _actionResult is Some<RoundOutcomes>(RoundOver _);
 
@@ -18,13 +19,18 @@ public class Game : IGame
         _players = players;
         _roundFactory = roundFactory;
         _actionResult = new NoActionRecord<RoundOutcomes>();
+        _roundCount = 1;
     }
 
     public void PlayGame()
     {
-        do PlayRound();
-        while (ShouldPlayAnotherRound());
-        Winner().Winner = true;
+        while (ShouldPlayAnotherRound() && AreAnyCategoriesLeft())
+        { 
+            Console.WriteLine($"Round: {_roundCount.ToString()}");
+            PlayRound();
+            IncrementRoundCount();
+        }
+        PlayerWithHighestScoreAtEndOfGame().Winner = true;
     }
     
     private void PlayRound()
@@ -38,7 +44,15 @@ public class Game : IGame
 
     private bool ShouldPlayAnotherRound() => !PreviousRoundAbandoned && DoAllPlayersWantToPlayAgain();
 
-    private IPlayer Winner() => _players.OrderByDescending(player => player.RecordHolder.GetTotalPoints()).First();
-    
-    
+    private IPlayer PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.RecordHolder.GetTotalPoints()).First();
+
+    private bool AreAnyCategoriesLeft() =>
+        _players.Any(players => players.RecordHolder.GetRemainingCategory().Count != 0);
+
+    private void IncrementRoundCount()
+    {
+        _roundCount += 1;
+    }
+
+
 }
