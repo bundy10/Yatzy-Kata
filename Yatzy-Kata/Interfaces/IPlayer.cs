@@ -7,5 +7,7 @@ public interface IPlayer
     bool Winner { get; set; }
     bool PlayAgain();
     IPlayerRecordHolder RecordHolder { get; set; }
+    
+    IStrategy Strategy { get; set; }
 
 }

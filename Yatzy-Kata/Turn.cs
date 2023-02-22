@@ -19,6 +19,7 @@ public class Turn : ITurn
     public DiceHandAndCategoryAtTurnEnd PlayerTurn()
     {
         var diceRoll = _turnEventHandler.RollDice();
-        return _scorer.CalculateScore(diceRoll, _player.RecordHolder.GetRemainingCategory());
+        
+        return _player.Strategy.CalculateScore(diceRoll, _player.RecordHolder.GetRemainingCategory());
     }
 }

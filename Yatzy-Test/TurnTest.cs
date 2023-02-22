@@ -2,6 +2,7 @@ using Moq;
 using Yatzy_Kata;
 using Yatzy_Kata.Data;
 using Yatzy_Kata.Interfaces;
+using Yatzy_Kata.Strategies;
 
 namespace Yatzy_Test;
 
@@ -15,7 +16,7 @@ public class TurnTest
     {
         _randomMock = new Mock<IRandom>();
         _scorer = new Mock<IScorer>();
-        _turn = new Turn(_randomMock.Object, _scorer.Object, new Player());
+        _turn = new Turn(_randomMock.Object, _scorer.Object, new Player(new ComputerStrategy()));
     }
 
     [Fact]

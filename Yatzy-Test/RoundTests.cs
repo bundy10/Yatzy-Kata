@@ -6,6 +6,7 @@ using Yatzy_Kata.Factories;
 using Yatzy_Kata.Interfaces;
 using Yatzy_Kata.Outcomes;
 using FluentAssertions;
+using Yatzy_Kata.Strategies;
 
 namespace Yatzy_Test;
 
@@ -23,8 +24,8 @@ public class RoundTests
         _turnFactoryMock = new Mock<ITurnFactory>();
         _player1TurnMock = new Mock<ITurn>();
         _player2TurnMock = new Mock<ITurn>();
-        _player1 = new Player();
-        _player2 = new Player();
+        _player1 = new Player(new ComputerStrategy());
+        _player2 = new Player(new ComputerStrategy());
         _round = new Round(new List<IPlayer> { _player1, _player2 }, _turnFactoryMock.Object);
 
 

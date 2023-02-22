@@ -10,9 +10,11 @@ public class Player : IPlayer
         return true;
     }
     public IPlayerRecordHolder RecordHolder { get; set; }
+    public IStrategy Strategy { get; set; }
 
-    public Player()
+    public Player(IStrategy strategy)
     {
+        Strategy = strategy;
         RecordHolder = new PlayerRecordHolder();
     }
 }
