@@ -1,4 +1,5 @@
 using Yatzy_Kata.Data;
+using Yatzy_Kata.Interfaces;
 
 namespace Yatzy_Kata;
 
@@ -30,7 +31,7 @@ public class PlayerRecordHolder : IPlayerRecordHolder
         _roundScore = roundScore;
     }
 
-    public void SetTotalPoints(int roundScore)
+    public void AddToTotalPoints(int roundScore)
     {
         _totalPoints += roundScore;
     }
@@ -46,12 +47,3 @@ public class PlayerRecordHolder : IPlayerRecordHolder
     }
 }
 
-public interface IPlayerRecordHolder
-{
-    public void RemoveUsedCategory(Category categoryToRemove);
-    public void SetRoundScore(int roundScore);
-    public int GetRoundScore();
-    public void SetTotalPoints(int roundScore);
-    public int GetTotalPoints();
-    public List<Category> GetRemainingCategory();
-}

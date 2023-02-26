@@ -6,7 +6,6 @@ namespace Yatzy_Kata.Strategies;
 public class ComputerStrategy : IStrategy
 {
     
-    private int _totalScore;
     private int _currentScore;
     private DiceHandAndCategoryAtTurnEnd? _currentDiceHandAndCategoryAtTurnEnd;
     private List<int> _currentDiceRoll;
@@ -29,7 +28,6 @@ public class ComputerStrategy : IStrategy
             if (remainingCategories[i].CalculateScore(_currentDiceRoll) > 0)
             {
                 _currentScore = remainingCategories[i].CalculateScore(_currentDiceRoll);
-                _totalScore += _currentScore;
                 _currentDiceHandAndCategoryAtTurnEnd = new DiceHandAndCategoryAtTurnEnd(_currentDiceRoll, remainingCategories[i]);
                 break;
             }

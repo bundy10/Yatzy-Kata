@@ -27,7 +27,7 @@ public class Round : IRound
             var turn = _turnFactory.CreateTurn(player);
             var playerTurnResult = turn.PlayerTurn();
             player.RecordHolder.SetRoundScore(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
-            player.RecordHolder.SetTotalPoints(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
+            player.RecordHolder.AddToTotalPoints(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
             player.RecordHolder.RemoveUsedCategory(playerTurnResult.Category);
         }
     }
