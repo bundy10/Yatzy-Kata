@@ -3,7 +3,7 @@ using Yatzy_Kata.Interfaces;
 
 namespace Yatzy_Kata.Strategies;
 
-public class RealUserStrategy : IStrategy
+public class ConsoleUserStrategy : IStrategy
 {
     public DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
     {

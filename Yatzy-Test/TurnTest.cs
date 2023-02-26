@@ -16,7 +16,7 @@ public class TurnTest
     {
         _randomMock = new Mock<IRandom>();
         _scorer = new Mock<IScorer>();
-        _turn = new Turn(_randomMock.Object, _scorer.Object, new Player(new ComputerStrategy()));
+        _turn = new Turn(_randomMock.Object, _scorer.Object, new Player(new ComputerStrategy(), new ComputerDiceRollStrategy()));
     }
 
     [Fact]
