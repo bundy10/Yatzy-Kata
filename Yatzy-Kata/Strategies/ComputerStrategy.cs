@@ -5,10 +5,15 @@ namespace Yatzy_Kata.Strategies;
 
 public class ComputerStrategy : IStrategy
 {
-    
+    public IDiceRollStrategy DiceRollStrategy { get; set; }
     private int _currentScore;
     private DiceHandAndCategoryAtTurnEnd? _currentDiceHandAndCategoryAtTurnEnd;
     private List<int> _currentDiceRoll;
+
+    public ComputerStrategy()
+    {
+        DiceRollStrategy = new ComputerDiceRollStrategy();
+    }
     
     public DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
     {
@@ -40,5 +45,4 @@ public class ComputerStrategy : IStrategy
             
         }
     }
-    
 }
