@@ -24,8 +24,8 @@ public class RoundTests
         _turnFactoryMock = new Mock<ITurnFactory>();
         _player1TurnMock = new Mock<ITurn>();
         _player2TurnMock = new Mock<ITurn>();
-        _player1 = new Player(new ComputerStrategy(), new ComputerDiceRollStrategy());
-        _player2 = new Player(new ComputerStrategy(), new ComputerDiceRollStrategy());
+        _player1 = new Player(new ComputerStrategy());
+        _player2 = new Player(new ComputerStrategy());
         _round = new Round(new List<IPlayer> { _player1, _player2 }, _turnFactoryMock.Object);
 
 
