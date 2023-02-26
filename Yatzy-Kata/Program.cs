@@ -9,7 +9,7 @@ namespace Yatzy_Kata // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            var player1 = new Player(new ComputerStrategy(), new ConsoleDiceRollStrategy());
+            var player1 = new Player(new ComputerStrategy(), new ComputerDiceRollStrategy());
             var player2 = new Player(new ComputerStrategy(), new ComputerDiceRollStrategy());
 
             List<IPlayer> players = new List<IPlayer> { player1, player2 };

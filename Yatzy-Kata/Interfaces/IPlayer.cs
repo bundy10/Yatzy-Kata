@@ -9,5 +9,6 @@ public interface IPlayer
     IPlayerRecordHolder RecordHolder { get; set; }
     
     IStrategy Strategy { get; set; }
-
+    
+    IDiceRollStrategy DiceRollStrategy { get; set; }
 }
