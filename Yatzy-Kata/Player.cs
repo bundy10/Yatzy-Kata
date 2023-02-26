@@ -11,13 +11,11 @@ public class Player : IPlayer
     }
     public IPlayerRecordHolder RecordHolder { get; set; }
     public IStrategy Strategy { get; set; }
-    public IDiceRollStrategy DiceRollStrategy { get; set; }
 
-    public Player(IStrategy strategy, IDiceRollStrategy diceRollStrategy)
+    public Player(IStrategy strategy)
     {
         Strategy = strategy;
         RecordHolder = new PlayerRecordHolder();
-        DiceRollStrategy = diceRollStrategy;
     }
 
     
