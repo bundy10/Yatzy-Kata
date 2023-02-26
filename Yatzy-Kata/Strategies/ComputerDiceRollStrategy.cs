@@ -6,13 +6,19 @@ namespace Yatzy_Kata.Strategies;
 public class ComputerDiceRollStrategy : IDiceRollStrategy
 {
     private readonly IRandom _randomDiceRoll;
+    private List<int> _diceHand = new();
 
     public ComputerDiceRollStrategy()
     {
         _randomDiceRoll = new RandomDiceRoll();
     }
-    public List<int> RollDice()
+    public void RollDice()
     {
-        return _randomDiceRoll.GetDiceNumbersBetweenRange();
+        _diceHand = _randomDiceRoll.GetDiceNumbersBetweenRange();
+    }
+
+    public List<int> GetDiceHand()
+    {
+        return _diceHand;
     }
 }

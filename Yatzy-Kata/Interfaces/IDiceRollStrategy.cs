@@ -2,5 +2,6 @@ namespace Yatzy_Kata.Interfaces;
 
 public interface IDiceRollStrategy
 {
-    public List<int> RollDice();
+    public void RollDice();
+    public List<int> GetDiceHand();
 }

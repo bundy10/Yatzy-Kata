@@ -6,7 +6,7 @@ namespace Yatzy_Kata.Strategies;
 public class ConsoleDiceRollStrategy : IDiceRollStrategy
 {
     private readonly IRandom _randomDiceRoll;
-    private List<int>? _diceHand;
+    private List<int> _diceHand = new();
     private readonly IReader _reader;
     private readonly IWriter _writer;
 
@@ -16,10 +16,15 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
         _writer = writer;
         _randomDiceRoll = new RandomDiceRoll();
     }
-    public List<int> RollDice()
+    public List<int> GetDiceHand()
+    {
+        return _diceHand;
+    }
+    public void RollDice()
     {
         _diceHand = _randomDiceRoll.GetDiceNumbersBetweenRange();
-        return _diceHand;
+        GetDiceSelection();
+        
     }
 
     private void ReRoll()
@@ -30,5 +35,10 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
     private void SelectWhichDieToReRoll()
     {
         
+    }
+
+    private void GetDiceSelection()
+    {
+        _writer.WriteLine(ConsoleMessages.DiceHandToString(_diceHand));
     }
 }
