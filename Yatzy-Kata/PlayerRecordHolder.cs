@@ -3,27 +3,27 @@ using Yatzy_Kata.Interfaces;
 
 namespace Yatzy_Kata;
 
-public class PlayerRecordHolder : IPlayerRecordHolder
+public class PlayerRecordHolder
 {
     private int _totalPoints;
     private int _roundScore;
-    private List<Category> _remainingCategorys;
+    private readonly List<Category> _remainingCategories;
 
     public PlayerRecordHolder()
     {
         _roundScore = 0;
         _totalPoints = 0;
-        _remainingCategorys = new List<Category>() { new Aces(), new Twos(), new Threes(), new Fours(), new Fives(), new Sixes(), new Chance(), new ThreeOfAKind(), new FourOfAKind(), new FullHouse(), new SmallStraight(), new LargeStraight(), new Yahtzee()};
+        _remainingCategories = new List<Category>() { new Aces(), new Twos(), new Threes(), new Fours(), new Fives(), new Sixes(), new Chance(), new ThreeOfAKind(), new FourOfAKind(), new FullHouse(), new SmallStraight(), new LargeStraight(), new Yahtzee()};
     }
 
     public List<Category> GetRemainingCategories()
     {
-        return _remainingCategorys;
+        return _remainingCategories;
     }
 
     public void RemoveUsedCategory(Category categoryToRemove)
     {
-        _remainingCategorys.Remove(categoryToRemove);
+        _remainingCategories.Remove(categoryToRemove);
     }
 
     public void SetRoundScore(int roundScore)
