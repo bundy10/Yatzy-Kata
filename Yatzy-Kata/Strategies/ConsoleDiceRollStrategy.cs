@@ -47,24 +47,20 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
     private List<int> GetSelectedDicesToReRoll()
     {
         var selectedDices = new List<int>();
-
+        _writer.WriteLine(ConsoleMessages.SelectWhichDieToReRoll);
         while (selectedDices.Count == 0)
         {
-            _writer.WriteLine(ConsoleMessages.SelectWhichDieToReRoll);
             var dieSelected = _reader.ReadLine();
 
-            foreach (var die in dieSelected)
-            { 
-                if (int.TryParse(die.ToString(), out var dieIndex) && (dieIndex < 1 || dieIndex > _diceHand.Count))
-                {
-                    selectedDices.Add(dieIndex - 1);
-                }
-                else
-                {
-                    _writer.WriteLine(ConsoleMessages.InvalidDieInput);
-                    selectedDices.Clear(); 
-                    break;
-                }
+            selectedDices = dieSelected
+                .Where(char.IsDigit)
+                .Select(digit => int.Parse(digit.ToString()) - 1)
+                .Where(index => index >= 0 && index < _diceHand.Count)
+                .ToList();
+
+            if (selectedDices.Count == 0)
+            {
+                _writer.WriteLine(ConsoleMessages.InvalidDieInput);
             }
         }
 
