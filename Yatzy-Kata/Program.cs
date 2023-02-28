@@ -12,7 +12,7 @@ namespace Yatzy_Kata // Note: actual namespace depends on the project name.
             var player1 = new Player(new ConsoleUserStrategy());
             var player2 = new Player(new ComputerStrategy());
 
-            List<IPlayer> players = new List<IPlayer> { player1, player2 };
+            List<Player> players = new List<Player> { player1, player2 };
 
             var game = new Game(players, new RoundFactory(new TurnFactory()));
             game.PlayGame();

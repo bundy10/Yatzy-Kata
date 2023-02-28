@@ -5,44 +5,55 @@ namespace Yatzy_Kata.Strategies;
 
 public class ComputerStrategy : IStrategy
 {
-    public IDiceRollStrategy DiceRollStrategy { get; set; }
     private int _currentScore;
-    private DiceHandAndCategoryAtTurnEnd? _currentDiceHandAndCategoryAtTurnEnd;
-    private List<int> _currentDiceRoll;
+    private ScoreAndCategoryAtTurnEnd? _currentScoreAndCategoryAtTurnEnd;
+    private List<int>? _currentDiceRoll;
+    private readonly ComputerDiceRollStrategy _diceRollStrategy;
 
     public ComputerStrategy()
     {
-        DiceRollStrategy = new ComputerDiceRollStrategy();
+        _diceRollStrategy = new ComputerDiceRollStrategy();
     }
     
-    public DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
+    public ScoreAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
     {
         _currentDiceRoll = diceRoll;
         _currentScore = 0;
         if (remainingCategories.Count != 0)
         {
-            Strategy(remainingCategories);
+            SelectCategoryStrategy(remainingCategories);
         }
-        return _currentDiceHandAndCategoryAtTurnEnd;
+        if (_currentScoreAndCategoryAtTurnEnd == null)
+        {
+            throw new InvalidOperationException("Something is wrong currentScoreAndCategoryAtTurnEnd cannot be null");
+        }
+    
+        return _currentScoreAndCategoryAtTurnEnd;
     }
 
-    public void Strategy(List<Category> remainingCategories)
+    public void SelectCategoryStrategy(List<Category> remainingCategories)
     {
         for (var i = remainingCategories.Count - 1; i >= 0; i--)
         {
             if (remainingCategories[i].CalculateScore(_currentDiceRoll) > 0)
             {
                 _currentScore = remainingCategories[i].CalculateScore(_currentDiceRoll);
-                _currentDiceHandAndCategoryAtTurnEnd = new DiceHandAndCategoryAtTurnEnd(_currentDiceRoll, remainingCategories[i]);
+                _currentScoreAndCategoryAtTurnEnd = new ScoreAndCategoryAtTurnEnd(_currentScore, remainingCategories[i]);
                 break;
             }
         }
 
         if (_currentScore == 0)
         {
-            _currentDiceHandAndCategoryAtTurnEnd = new DiceHandAndCategoryAtTurnEnd(_currentDiceRoll, remainingCategories[0]);
-            remainingCategories.RemoveAt(0);
-            
+            _currentScoreAndCategoryAtTurnEnd = new ScoreAndCategoryAtTurnEnd(_currentScore, remainingCategories[0]);
+
         }
+    }
+
+    public ScoreAndCategoryAtTurnEnd GetScoreAndCategoryAtTurnEnd(List<Category> remainingCategories)
+    {
+        _diceRollStrategy.RollDice();
+        var diceHand = _diceRollStrategy.GetDiceHand();
+        return CalculateScore(diceHand, remainingCategories);
     }
 }

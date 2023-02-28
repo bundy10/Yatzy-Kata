@@ -5,17 +5,12 @@ namespace Yatzy_Kata;
 
 public class Turn : ITurn
 {
-    private readonly IPlayer _player;
+    private readonly Player _player;
 
-    public Turn(IPlayer player)
+    public Turn(Player player)
     {
         _player = player;
     }
-    
-    public DiceHandAndCategoryAtTurnEnd PlayerTurn()
-    {
-        _player.Strategy.DiceRollStrategy.RollDice();
-        var diceHand = _player.Strategy.DiceRollStrategy.GetDiceHand();
-        return _player.Strategy.CalculateScore(diceHand, _player.RecordHolder.GetRemainingCategory());
-    }
+
+    public ScoreAndCategoryAtTurnEnd PlayerTurn() => _player.CompleteTurn();
 }

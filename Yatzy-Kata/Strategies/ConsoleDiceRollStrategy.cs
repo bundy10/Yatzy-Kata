@@ -24,7 +24,7 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
     public void RollDice()
     {
         _diceHand = _randomDiceRoll.GetDiceNumbersBetweenRange();
-        DiceSelection();
+        DisplayCurrentDiceHand();
         while (_reRollCount < 3 && GetReRollDecision())
         {
             ReRoll();
@@ -41,48 +41,37 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
         {
             _diceHand[dieIndex] = _randomDiceRoll.GetDiceRoll();
         }
-        DiceSelection();
+        DisplayCurrentDiceHand();
     }
 
     private List<int> GetSelectedDicesToReRoll()
     {
         var selectedDices = new List<int>();
-        bool keepAdding = true;
-        while (keepAdding)
+
+        while (selectedDices.Count == 0)
         {
-            selectedDices.Add(GetDieSelectedForReRoll());
-            _writer.WriteLine(ConsoleMessages.AddAnotherDie);
-            keepAdding = (_reader.ReadLine().ToLower() == "y");
+            _writer.WriteLine(ConsoleMessages.SelectWhichDieToReRoll);
+            var dieSelected = _reader.ReadLine();
+
+            foreach (var die in dieSelected)
+            { 
+                if (int.TryParse(die.ToString(), out var dieIndex) && (dieIndex < 1 || dieIndex > _diceHand.Count))
+                {
+                    selectedDices.Add(dieIndex - 1);
+                }
+                else
+                {
+                    _writer.WriteLine(ConsoleMessages.InvalidDieInput);
+                    selectedDices.Clear(); 
+                    break;
+                }
+            }
         }
+
         return selectedDices;
     }
-
-    private int GetDieSelectedForReRoll()
-    {
-        _writer.WriteLine(ConsoleMessages.SelectWhichDieToReRoll);
-        int dieSelected;
-        while (true)
-        {
-            if (!int.TryParse(_reader.ReadLine(), out dieSelected))
-            {
-                _writer.WriteLine(ConsoleMessages.InvalidDieInput);
-                continue;
-            }
-
-            if (dieSelected < 1 || dieSelected > _diceHand.Count)
-            {
-                _writer.WriteLine(ConsoleMessages.InvalidDieIndex);
-                continue;
-            }
-
-            break;
-        }
-
-        return dieSelected - 1;
-        
-    }
-
-    private void DiceSelection()
+    
+    private void DisplayCurrentDiceHand()
     {
         _writer.WriteLine(ConsoleMessages.DiceHandToString(_diceHand));
     }

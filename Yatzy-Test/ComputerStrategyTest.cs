@@ -19,7 +19,7 @@ public class ScorerTest
     {
         //Arrange
         var diceRoll = new List<int> { 4, 4, 4, 6, 6 };
-        var expectedScore = new DiceHandAndCategoryAtTurnEnd(diceRoll, new FullHouse());
+        var expectedScore = new ScoreAndCategoryAtTurnEnd(diceRoll, new FullHouse());
 
         //Act
         var actualScore = _scorer.CalculateScore(diceRoll, _remainingCategories);
@@ -33,7 +33,7 @@ public class ScorerTest
     {
         //Arrange
         var diceRoll = new List<int> { 5, 5, 5, 5, 5 };
-        var expectedCategoryChosenAndDiceRoll = new DiceHandAndCategoryAtTurnEnd(diceRoll, new Aces());
+        var expectedCategoryChosenAndDiceRoll = new ScoreAndCategoryAtTurnEnd(diceRoll, new Aces());
 
         //Act
         _scorer.CalculateScore(diceRoll, _remainingCategories);

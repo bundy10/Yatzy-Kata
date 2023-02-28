@@ -9,5 +9,5 @@ public interface IPlayerRecordHolder
     public int GetRoundScore();
     public void AddToTotalPoints(int roundScore);
     public int GetTotalPoints();
-    public List<Category> GetRemainingCategory();
+    public List<Category> GetRemainingCategories();
 }

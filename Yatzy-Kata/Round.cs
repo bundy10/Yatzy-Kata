@@ -7,9 +7,9 @@ namespace Yatzy_Kata;
 public class Round : IRound
 {
     private readonly ITurnFactory _turnFactory;
-    private readonly IPlayer[] _players;
+    private readonly Player[] _players;
 
-    public Round(IEnumerable<IPlayer> players, ITurnFactory turnFactory)
+    public Round(IEnumerable<Player> players, ITurnFactory turnFactory)
     {
         _turnFactory = turnFactory;
         _players = players.ToArray();
@@ -25,17 +25,14 @@ public class Round : IRound
         foreach (var player in _players)
         {
             var turn = _turnFactory.CreateTurn(player);
-            var playerTurnResult = turn.PlayerTurn();
-            player.RecordHolder.SetRoundScore(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
-            player.RecordHolder.AddToTotalPoints(playerTurnResult.Category.CalculateScore(playerTurnResult.Dice));
-            player.RecordHolder.RemoveUsedCategory(playerTurnResult.Category);
+            player.UpdateRecordsAfterTurn(turn.PlayerTurn());
         }
     }
 
     private RoundOutcomes RoundWinner()
     {
-        var highestScore = _players.Max(player => player.RecordHolder.GetRoundScore());
-        var playersWithHighestScore = _players.Where(players => players.RecordHolder.GetRoundScore() == highestScore);
+        var highestScore = _players.Max(player => player.GetRoundScore());
+        var playersWithHighestScore = _players.Where(players => players.GetRoundScore() == highestScore);
         var highestScoringPlayers = playersWithHighestScore.ToList();
 
         return highestScoringPlayers.Count switch

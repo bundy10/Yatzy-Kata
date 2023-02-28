@@ -4,10 +4,12 @@ namespace Yatzy_Kata.Interfaces;
 
 public interface IStrategy
 {
-    DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories);
+    ScoreAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories);
 
-    public void Strategy(List<Category> remainingCategories);
+    public void SelectCategoryStrategy(List<Category> remainingCategories);
+
+    public ScoreAndCategoryAtTurnEnd GetScoreAndCategoryAtTurnEnd(List<Category> remainingCategories);
     
-    public IDiceRollStrategy DiceRollStrategy { get; set; }
+    
 
 }

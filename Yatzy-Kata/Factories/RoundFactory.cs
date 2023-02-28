@@ -11,7 +11,7 @@ public class RoundFactory : IRoundFactory
         _turnFactory = turnFactory;
         
     }
-    public IRound CreateRound(IEnumerable<IPlayer> players)
+    public IRound CreateRound(IEnumerable<Player> players)
     {
         return new Round(players, _turnFactory);
     }

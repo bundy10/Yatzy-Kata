@@ -5,7 +5,7 @@ namespace Yatzy_Kata.Factories;
 
 public class TurnFactory : ITurnFactory
 {
-    public ITurn CreateTurn(IPlayer player)
+    public ITurn CreateTurn(Player player)
     {
         return new Turn(player);
     }

@@ -11,13 +11,18 @@ public class ConsoleUserStrategy : IStrategy
         DiceRollStrategy = new ConsoleDiceRollStrategy(new ConsoleReader(), new ConsoleWriter());
     }
 
-    public DiceHandAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
+    public ScoreAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
     {
-        return new DiceHandAndCategoryAtTurnEnd(diceRoll, new Aces());
+        return new ScoreAndCategoryAtTurnEnd(new Aces().CalculateScore(diceRoll), new Aces());
     }
 
-    public void Strategy(List<Category> remainingCategories)
+    public void SelectCategoryStrategy(List<Category> remainingCategories)
     {
         
+    }
+
+    public ScoreAndCategoryAtTurnEnd GetScoreAndCategoryAtTurnEnd(List<Category> remainingCategories)
+    {
+        return new ScoreAndCategoryAtTurnEnd(32, new Aces());
     }
 }

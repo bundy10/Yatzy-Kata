@@ -4,5 +4,5 @@ namespace Yatzy_Kata.Interfaces;
 
 public interface ITurn
 {
-    DiceHandAndCategoryAtTurnEnd PlayerTurn();
+    ScoreAndCategoryAtTurnEnd PlayerTurn();
 }

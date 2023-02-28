@@ -16,7 +16,7 @@ public class PlayerRecordHolder : IPlayerRecordHolder
         _remainingCategorys = new List<Category>() { new Aces(), new Twos(), new Threes(), new Fours(), new Fives(), new Sixes(), new Chance(), new ThreeOfAKind(), new FourOfAKind(), new FullHouse(), new SmallStraight(), new LargeStraight(), new Yahtzee()};
     }
 
-    public List<Category> GetRemainingCategory()
+    public List<Category> GetRemainingCategories()
     {
         return _remainingCategorys;
     }

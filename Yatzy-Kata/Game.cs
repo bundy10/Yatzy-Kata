@@ -6,7 +6,7 @@ namespace Yatzy_Kata;
 
 public class Game : IGame
 {
-    private readonly IEnumerable<IPlayer> _players;
+    private readonly IEnumerable<Player> _players;
     private readonly IRoundFactory _roundFactory;
     private Records.Action<RoundOutcomes> _actionResult;
     private int _roundCount;
@@ -14,7 +14,7 @@ public class Game : IGame
     private bool PreviousRoundAbandoned => _actionResult is Some<RoundOutcomes>(RoundOver _);
 
 
-    public Game(IEnumerable<IPlayer> players, IRoundFactory roundFactory)
+    public Game(IEnumerable<Player> players, IRoundFactory roundFactory)
     {
         _players = players;
         _roundFactory = roundFactory;
@@ -44,10 +44,10 @@ public class Game : IGame
 
     private bool ShouldPlayAnotherRound() => !PreviousRoundAbandoned && DoAllPlayersWantToPlayAgain();
 
-    private IPlayer PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.RecordHolder.GetTotalPoints()).First();
+    private Player PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.GetTotalPoints()).First();
 
     private bool AreAnyCategoriesLeft() =>
-        _players.Any(players => players.RecordHolder.GetRemainingCategory().Count != 0);
+        _players.Any(players => players.GetRemainingCategories().Count != 0);
 
     private void IncrementRoundCount()
     {

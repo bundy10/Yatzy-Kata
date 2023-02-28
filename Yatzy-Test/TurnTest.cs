@@ -28,10 +28,10 @@ public class TurnTest
         _randomMock.Setup(diceRolls => diceRolls.GetDiceNumbersBetweenRange())
             .Returns(new List<int>() { 1, 2, 3, 4, 5, 6 });
         _scorer.Setup(score => score.CalculateScore(It.IsAny<List<int>>(), It.IsAny<List<Category>>()))
-            .Returns(new DiceHandAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy));
+            .Returns(new ScoreAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy));
         
         
-        DiceHandAndCategoryAtTurnEnd expectedOutcomeOfPlayerTurnEnd = new DiceHandAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy);
+        ScoreAndCategoryAtTurnEnd expectedOutcomeOfPlayerTurnEnd = new ScoreAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy);
 
         //act 
         _turn.PlayerTurn();
