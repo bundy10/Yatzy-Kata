@@ -4,7 +4,7 @@ using Yatzy_Kata.Records;
 
 namespace Yatzy_Kata;
 
-public class Game : IGame
+public class Game
 {
     private readonly IEnumerable<Player> _players;
     private readonly IRoundFactory _roundFactory;
