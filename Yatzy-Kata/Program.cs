@@ -3,14 +3,14 @@ using Yatzy_Kata.Factories;
 using Yatzy_Kata.Interfaces;
 using Yatzy_Kata.Strategies;
 
-namespace Yatzy_Kata // Note: actual namespace depends on the project name.
+namespace Yatzy_Kata 
 {
     public static class Program
     {
         static void Main(string[] args)
         {
-            var player1 = new Player(new ConsoleUserStrategy(new ConsoleReader(), new ConsoleWriter()));
-            var player2 = new Player(new ComputerStrategy());
+            var player1 = new Player("bundy", new ConsoleUserStrategy(new ConsoleReader(), new ConsoleWriter()));
+            var player2 = new Player("james", new ComputerStrategy());
 
             List<Player> players = new List<Player> { player1, player2 };
 

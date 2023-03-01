@@ -4,5 +4,6 @@ namespace Yatzy_Kata.Interfaces;
 
 public interface IRound
 {
-    RoundOutcomes PlayRound();
+    RoundOutcomes GetRoundResult();
+    void PlayTurns();
 }

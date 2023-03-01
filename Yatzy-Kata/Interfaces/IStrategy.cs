@@ -10,6 +10,6 @@ public interface IStrategy
 
     public ScoreAndCategoryAtTurnEnd GetScoreAndCategoryAtTurnEnd(List<Category> remainingCategories);
     
-    
-
+    bool GetAbandonChoice();
+    void DoesPlayerWantToAbandonGame();
 }
