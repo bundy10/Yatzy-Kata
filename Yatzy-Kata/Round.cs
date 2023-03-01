@@ -14,25 +14,20 @@ public class Round : IRound
         _turnFactory = turnFactory;
         _players = players.ToArray();
     }
-    public RoundOutcomes PlayRound()
-    {
-        GetTurnResults();
-        return RoundWinner();
-    }
-
-    private void GetTurnResults()
+    
+    public void PlayTurns()
     {
         foreach (var player in _players)
         {
             var turn = _turnFactory.CreateTurn(player);
-            player.UpdateRecordsAfterTurn(turn.PlayerTurn());
+            turn.PlayerTurn();
         }
     }
-
-    private RoundOutcomes RoundWinner()
+    
+    public RoundOutcomes GetRoundResult()
     {
-        var highestScore = _players.Max(player => player.GetRoundScore());
-        var playersWithHighestScore = _players.Where(players => players.GetRoundScore() == highestScore);
+        var highestScore = _players.Max(player => player.PlayerRoundScore());
+        var playersWithHighestScore = _players.Where(players => players.PlayerRoundScore() == highestScore);
         var highestScoringPlayers = playersWithHighestScore.ToList();
 
         return highestScoringPlayers.Count switch

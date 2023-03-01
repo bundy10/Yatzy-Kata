@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Yatzy_Kata.Data;
 using Yatzy_Kata.Interfaces;
 
@@ -12,5 +13,13 @@ public class Turn : ITurn
         _player = player;
     }
 
-    public ScoreAndCategoryAtTurnEnd PlayerTurn() => _player.CompleteTurn();
+    public void PlayerTurn()
+    {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        _player.CompleteTurn();
+        stopwatch.Stop();
+        var timeSpentInTurn = (int)Math.Round(stopwatch.Elapsed.TotalSeconds);
+        _player.UpdateRecordsAfterTurn(timeSpentInTurn);
+    }
 }
