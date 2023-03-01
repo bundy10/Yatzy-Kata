@@ -5,34 +5,39 @@ namespace Yatzy_Kata;
 
 public class Player
 {
+    public readonly string Name;
     private readonly IStrategy _strategy;
     private readonly PlayerRecordHolder _recordHolder;
-    public bool Winner { get; set; }
-    public bool PlayAgain()
+    private ScoreAndCategoryAtTurnEnd? _turnResults;
+    
+    public Player(string name, IStrategy strategy)
     {
-        return true;
-    }
-
-    public Player(IStrategy strategy)
-    {
+        Name = name;
         _strategy = strategy;
         _recordHolder = new PlayerRecordHolder();
     }
 
-    public void UpdateRecordsAfterTurn(ScoreAndCategoryAtTurnEnd turnResult)
+    public void UpdateRecordsAfterTurn(int timeSpentInTurn)
     {
-        _recordHolder.SetRoundScore(turnResult.Score);
-        _recordHolder.AddToTotalPoints(turnResult.Score);
-        _recordHolder.RemoveUsedCategory(turnResult.Category);
+        if (_turnResults == null) return;
+        _recordHolder.SetRoundScore(_turnResults.Score);
+        _recordHolder.AddToTotalPoints(_turnResults.Score);
+        _recordHolder.RemoveUsedCategory(_turnResults.Category);
+        _recordHolder.AddToTimeSpentInTurn(timeSpentInTurn);
     }
 
-    public ScoreAndCategoryAtTurnEnd CompleteTurn()
+    public void CompleteTurn()
     {
-        return _strategy.GetScoreAndCategoryAtTurnEnd(_recordHolder.GetRemainingCategories());
+        _turnResults = _strategy.GetScoreAndCategoryAtTurnEnd(_recordHolder.GetRemainingCategories());
     }
 
-    public int GetRoundScore() => _recordHolder.GetRoundScore();
-    public int GetTotalPoints() => _recordHolder.GetTotalPoints();
-
+    public void AbandonGameOrNot()
+    {
+        _strategy.DoesPlayerWantToAbandonGame();
+    }
+    
+    public bool AbandonedGame() => _strategy.GetAbandonChoice();
+    public int PlayerRoundScore() => _recordHolder.GetRoundScore();
+    public int PlayerTotalPoints() => _recordHolder.GetTotalPoints();
     public List<Category> GetRemainingCategories() => _recordHolder.GetRemainingCategories();
 }

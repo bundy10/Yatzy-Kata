@@ -7,9 +7,11 @@ public class ComputerStrategy : IStrategy
 {
     private List<int> _currentDiceRoll;
     private readonly ComputerDiceRollStrategy _diceRollStrategy;
+    private bool _abandoned;
 
     public ComputerStrategy()
     {
+        _abandoned = false;
         _currentDiceRoll = new List<int>();
         _diceRollStrategy = new ComputerDiceRollStrategy();
     }
@@ -37,5 +39,15 @@ public class ComputerStrategy : IStrategy
     {
         _diceRollStrategy.RollDice();
         return CalculateScore(_diceRollStrategy.GetDiceHand(), remainingCategories);
+    }
+
+    public bool GetAbandonChoice()
+    {
+        return _abandoned;
+    }
+
+    public void DoesPlayerWantToAbandonGame()
+    {
+        _abandoned = false;
     }
 }

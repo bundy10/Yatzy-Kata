@@ -8,51 +8,66 @@ public class Game
 {
     private readonly IEnumerable<Player> _players;
     private readonly IRoundFactory _roundFactory;
-    private Records.Action<RoundOutcomes> _actionResult;
     private int _roundCount;
-
-    private bool PreviousRoundAbandoned => _actionResult is Some<RoundOutcomes>(RoundOver _);
-
+    private readonly ConsoleWriter _writer;
+    private RoundOutcomes? _roundResult;
 
     public Game(IEnumerable<Player> players, IRoundFactory roundFactory)
     {
         _players = players;
         _roundFactory = roundFactory;
-        _actionResult = new NoActionRecord<RoundOutcomes>();
-        _roundCount = 1;
+        _roundCount = 0;
+        _writer = new ConsoleWriter();
     }
 
     public void PlayGame()
     {
-        while (ShouldPlayAnotherRound() && AreAnyCategoriesLeft())
-        { 
-            Console.WriteLine($"Round: {_roundCount.ToString()}");
-            PlayRound();
+        _writer.WriteLine(ConsoleMessages.Welcome);
+        while (!PreviousRoundAbandoned && AreAnyCategoriesLeft())
+        {
             IncrementRoundCount();
+            PlayRound();
+            PrintRoundResult();
+            PlayersDecisionToAbandonGame();
+
         }
-        PlayerWithHighestScoreAtEndOfGame().Winner = true;
+        PrintFinalResults();
     }
-    
+
     private void PlayRound()
     {
+        _writer.WriteLine(ConsoleMessages.RoundCount(_roundCount));
         var round = _roundFactory.CreateRound(_players);
-        var roundOutcome = round.PlayRound();
-        _actionResult = new Some<RoundOutcomes>(roundOutcome);
+        round.PlayTurns();
+        _roundResult = round.GetRoundResult();
     }
 
-    private bool DoAllPlayersWantToPlayAgain() => _players.All(player => player.PlayAgain());
+    private void PlayersDecisionToAbandonGame()
+    {
+        foreach (var player in _players)
+        {
+            player.AbandonGameOrNot();
+            if (!player.AbandonedGame()) continue;
+            _roundResult = new RoundOver();
+            PrintRoundResult();
+        }
+    }
 
-    private bool ShouldPlayAnotherRound() => !PreviousRoundAbandoned && DoAllPlayersWantToPlayAgain();
-
-    private Player PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.GetTotalPoints()).First();
-
+    private void PrintRoundResult()
+    {
+        _writer.WriteLine(ConsoleMessages.RoundResults(_roundResult));
+    }
+    
+    private void PrintFinalResults()
+    {
+        if (PreviousRoundAbandoned) return;
+        var winner = PlayerWithHighestScoreAtEndOfGame();
+        _writer.WriteLine(ConsoleMessages.Winner(winner));
+        _writer.WriteLine(ConsoleMessages.Farewell);
+    }
+    private bool PreviousRoundAbandoned => _roundResult == new RoundOver();
+    private Player PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.PlayerTotalPoints()).First();
     private bool AreAnyCategoriesLeft() =>
         _players.Any(players => players.GetRemainingCategories().Count != 0);
-
-    private void IncrementRoundCount()
-    {
-        _roundCount += 1;
-    }
-
-
+    private void IncrementRoundCount() => _roundCount += 1;
 }

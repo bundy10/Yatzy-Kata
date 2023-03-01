@@ -8,11 +8,13 @@ public class ConsoleUserStrategy : IStrategy
     private readonly ConsoleDiceRollStrategy _diceRollStrategy;
     private readonly IReader _reader;
     private readonly IWriter _writer;
+    private bool _abandoned;
 
     public ConsoleUserStrategy(IReader reader, IWriter writer)
     {
         _reader = reader;
         _writer = writer;
+        _abandoned = false;
         _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer);
     }
 
@@ -39,5 +41,21 @@ public class ConsoleUserStrategy : IStrategy
     {
         _diceRollStrategy.RollDice();
         return CalculateScore(_diceRollStrategy.GetDiceHand(), remainingCategories);
+    }
+
+    public void DoesPlayerWantToAbandonGame()
+    {
+        _writer.WriteLine(ConsoleMessages.PlayAgainOrNot);
+        var abandonChoice = _reader.ReadLine();
+
+        if (abandonChoice?.ToLowerInvariant() == "y")
+        {
+            _abandoned = true;
+        }
+    }
+
+    public bool GetAbandonChoice()
+    {
+        return _abandoned;
     }
 }
