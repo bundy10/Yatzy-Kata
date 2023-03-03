@@ -28,7 +28,8 @@ public class Player
 
     public void CompleteTurn()
     {
-        _turnResults = _strategy.GetTurnResults(_recordHolder.GetRemainingCategories());
+        _strategy.CalculateTurnResults(_recordHolder.GetRemainingCategories());
+        _turnResults = _strategy.GetTurnResults();
     }
 
     public void AbandonGameOrNot()

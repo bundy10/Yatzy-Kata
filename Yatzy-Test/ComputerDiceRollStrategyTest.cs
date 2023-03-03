@@ -25,18 +25,23 @@ public class ComputerDiceRollStrategyTests
         Assert.Equal(new List<int> { 1, 2, 3, 4, 5 }, diceHand);
     }
     
-    [Fact]
-    public void GivenGetDiceHandIsCalled_WhenRollDiceIsCalled_ThenReturnAValidDiceHand()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(50)]
+    public void GivenGetDiceHandIsCalledMultipleTimes_WhenRollDiceIsCalled_ThenReturnValidDiceHands(int numberOfRolls)
     {
         // Arrange
         var strategy = new ComputerDiceRollStrategy(new RandomDiceRoll());
+    
+        for (var i = 0; i < numberOfRolls; i++)
+        {
+            // Act
+            strategy.RollDice();
+            var diceHand = strategy.GetDiceHand();
+            var validDiceHand = diceHand.Count == 5 && diceHand.All(die => die is >= 1 and <= 6);
         
-        // Act
-        strategy.RollDice();
-        var diceHand = strategy.GetDiceHand();
-        var validDiceHand = diceHand.Count == 5 && diceHand.All(i => i is >= 1 and <= 5);
-        
-        // Assert
-        Assert.True(validDiceHand);
+            // Assert
+            Assert.True(validDiceHand);
+        }
     }
 }

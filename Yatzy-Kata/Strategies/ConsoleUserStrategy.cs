@@ -9,6 +9,7 @@ public class ConsoleUserStrategy : IStrategy
     private readonly IReader _reader;
     private readonly IWriter _writer;
     private bool _abandoned;
+    private TurnResults? _turnResults;
 
     public ConsoleUserStrategy(IReader reader, IWriter writer)
     {
@@ -17,11 +18,19 @@ public class ConsoleUserStrategy : IStrategy
         _abandoned = false;
         _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer, new RandomDiceRoll());
     }
-
-    public TurnResults CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
+    
+    public TurnResults? GetTurnResults()
     {
+        return _turnResults;
+    }
+
+    public void CalculateTurnResults(List<Category> remainingCategories)
+    {
+        _diceRollStrategy.RollDice();
+        var diceRoll = _diceRollStrategy.GetDiceHand();
         var selectedCategory = SelectCategoryStrategy(remainingCategories);
-        return new TurnResults(selectedCategory.CalculateScore(diceRoll), selectedCategory);
+        var score = selectedCategory.CalculateScore(diceRoll);
+        _turnResults = new TurnResults(score, selectedCategory);
     }
 
     public Category SelectCategoryStrategy(List<Category> remainingCategories)
@@ -35,12 +44,6 @@ public class ConsoleUserStrategy : IStrategy
         } while (!int.TryParse(_reader.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > remainingCategories.Count);
 
         return remainingCategories[selectedIndex - 1];
-    }
-
-    public TurnResults GetTurnResults(List<Category> remainingCategories)
-    {
-        _diceRollStrategy.RollDice();
-        return CalculateScore(_diceRollStrategy.GetDiceHand(), remainingCategories);
     }
 
     public void DoesPlayerWantToAbandonGame()

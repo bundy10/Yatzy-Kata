@@ -8,6 +8,7 @@ public class ComputerStrategy : IStrategy
     private List<int> _currentDiceRoll;
     private readonly ComputerDiceRollStrategy _diceRollStrategy;
     private bool _abandoned;
+    private TurnResults? _turnResults;
 
     public ComputerStrategy()
     {
@@ -16,11 +17,18 @@ public class ComputerStrategy : IStrategy
         _diceRollStrategy = new ComputerDiceRollStrategy( new RandomDiceRoll());
     }
     
-    public TurnResults CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
+    public TurnResults? GetTurnResults()
     {
-        _currentDiceRoll = diceRoll;
+        return _turnResults;
+    }
+    
+    public void CalculateTurnResults(List<Category> remainingCategories)
+    {
+        _diceRollStrategy.RollDice();
+        _currentDiceRoll = _diceRollStrategy.GetDiceHand();
         var selectedCategory = SelectCategoryStrategy(remainingCategories);
-        return new TurnResults(selectedCategory.CalculateScore(diceRoll), selectedCategory);
+        var score = selectedCategory.CalculateScore(_currentDiceRoll);
+        _turnResults = new TurnResults(score, selectedCategory);
     }
 
     public Category SelectCategoryStrategy(List<Category> remainingCategories)
@@ -34,13 +42,7 @@ public class ComputerStrategy : IStrategy
         }
         return remainingCategories[0];
     }
-
-    public TurnResults GetTurnResults(List<Category> remainingCategories)
-    {
-        _diceRollStrategy.RollDice();
-        return CalculateScore(_diceRollStrategy.GetDiceHand(), remainingCategories);
-    }
-
+    
     public bool GetAbandonChoice()
     {
         return _abandoned;
