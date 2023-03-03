@@ -12,7 +12,7 @@ public class ComputerDiceRollStrategyTests
     {
         // Arrange
         var mockRandom = new Mock<IRandom>();
-        mockRandom.Setup(diceRoll  => diceRoll.GetDiceNumbersBetweenRange())
+        mockRandom.Setup(diceRoll  => diceRoll.GetDiceHand())
             .Returns(new List<int> { 1, 2, 3, 4, 5 });
 
         var strategy = new ComputerDiceRollStrategy(mockRandom.Object);

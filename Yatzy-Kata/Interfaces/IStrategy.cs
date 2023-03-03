@@ -5,11 +5,7 @@ namespace Yatzy_Kata.Interfaces;
 public interface IStrategy
 {
     void CalculateTurnResults(List<Category> remainingCategories);
-
-    public Category SelectCategoryStrategy(List<Category> remainingCategories);
-
     public TurnResults? GetTurnResults();
-    
     bool GetAbandonChoice();
     void DoesPlayerWantToAbandonGame();
 }

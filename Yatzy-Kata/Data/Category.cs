@@ -64,7 +64,12 @@ public sealed record SmallStraight() : Category
 {
     public override int CalculateScore(List<int> dice)
     {
-        return dice.SequenceEqual(Enumerable.Range(dice[0], 4)) ? 30 : 0;
+        HashSet<int> smallStraight1 = new HashSet<int>() { 1, 2, 3, 4 };
+        HashSet<int> smallStraight2 = new HashSet<int>() { 2, 3, 4, 5 };
+        HashSet<int> smallStraight3 = new HashSet<int>() { 3, 4, 5, 6 };
+        if (!smallStraight1.IsSubsetOf(dice) && !smallStraight2.IsSubsetOf(dice) &&
+            !smallStraight3.IsSubsetOf(dice)) return 0;
+        return 30;
     }
 }
 

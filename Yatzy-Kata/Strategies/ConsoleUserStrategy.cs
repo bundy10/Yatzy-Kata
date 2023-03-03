@@ -33,7 +33,7 @@ public class ConsoleUserStrategy : IStrategy
         _turnResults = new TurnResults(score, selectedCategory);
     }
 
-    public Category SelectCategoryStrategy(List<Category> remainingCategories)
+    private Category SelectCategoryStrategy(List<Category> remainingCategories)
     {
         _writer.WriteLine(ConsoleMessages.SelectCategory);
         _writer.WriteLine(ConsoleMessages.RemainingCategoriesToString(remainingCategories));

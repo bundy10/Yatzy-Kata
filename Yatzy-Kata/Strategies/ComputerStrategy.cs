@@ -10,11 +10,11 @@ public class ComputerStrategy : IStrategy
     private bool _abandoned;
     private TurnResults? _turnResults;
 
-    public ComputerStrategy()
+    public ComputerStrategy(IRandom randomDiceRoll)
     {
         _abandoned = false;
         _currentDiceRoll = new List<int>();
-        _diceRollStrategy = new ComputerDiceRollStrategy( new RandomDiceRoll());
+        _diceRollStrategy = new ComputerDiceRollStrategy(randomDiceRoll);
     }
     
     public TurnResults? GetTurnResults()
@@ -31,7 +31,7 @@ public class ComputerStrategy : IStrategy
         _turnResults = new TurnResults(score, selectedCategory);
     }
 
-    public Category SelectCategoryStrategy(List<Category> remainingCategories)
+    private Category SelectCategoryStrategy(List<Category> remainingCategories)
     {
         for (var i = remainingCategories.Count - 1; i >= 0; i--)
         {

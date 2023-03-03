@@ -23,7 +23,7 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
     }
     public void RollDice()
     {
-        _diceHand = _randomDiceRoll.GetDiceNumbersBetweenRange();
+        _diceHand = _randomDiceRoll.GetDiceHand();
         DisplayCurrentDiceHand();
         while (_reRollCount < 3 && GetReRollDecision())
         {

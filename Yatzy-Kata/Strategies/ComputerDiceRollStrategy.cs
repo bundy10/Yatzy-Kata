@@ -14,7 +14,7 @@ public class ComputerDiceRollStrategy : IDiceRollStrategy
     }
     public void RollDice()
     {
-        _diceHand = _randomDiceRoll.GetDiceNumbersBetweenRange();
+        _diceHand = _randomDiceRoll.GetDiceHand();
     }
 
     public List<int> GetDiceHand()

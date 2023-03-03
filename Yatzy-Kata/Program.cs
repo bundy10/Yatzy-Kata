@@ -1,4 +1,5 @@
 ﻿using System;
+using Yatzy_Kata.Data;
 using Yatzy_Kata.Factories;
 using Yatzy_Kata.Interfaces;
 using Yatzy_Kata.Strategies;
@@ -9,8 +10,9 @@ namespace Yatzy_Kata
     {
         static void Main(string[] args)
         {
-            var player1 = new Player("bundy", new ConsoleUserStrategy(new ConsoleReader(), new ConsoleWriter()));
-            var player2 = new Player("james", new ComputerStrategy());
+            /*var player1 = new Player("bundy", new ConsoleUserStrategy(new ConsoleReader(), new ConsoleWriter()));*/
+            var player1 = new Player("bundy", new ComputerStrategy(new RandomDiceRoll()));
+            var player2 = new Player("james", new ComputerStrategy(new RandomDiceRoll()));
 
             List<Player> players = new List<Player> { player1, player2 };
 
