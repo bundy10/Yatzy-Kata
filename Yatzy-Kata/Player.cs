@@ -8,7 +8,7 @@ public class Player
     public readonly string Name;
     private readonly IStrategy _strategy;
     private readonly PlayerRecordHolder _recordHolder;
-    private ScoreAndCategoryAtTurnEnd? _turnResults;
+    private TurnResults? _turnResults;
     
     public Player(string name, IStrategy strategy)
     {
@@ -28,7 +28,7 @@ public class Player
 
     public void CompleteTurn()
     {
-        _turnResults = _strategy.GetScoreAndCategoryAtTurnEnd(_recordHolder.GetRemainingCategories());
+        _turnResults = _strategy.GetTurnResults(_recordHolder.GetRemainingCategories());
     }
 
     public void AbandonGameOrNot()

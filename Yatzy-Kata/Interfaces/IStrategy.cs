@@ -4,11 +4,11 @@ namespace Yatzy_Kata.Interfaces;
 
 public interface IStrategy
 {
-    ScoreAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories);
+    TurnResults CalculateScore(List<int> diceRoll, List<Category> remainingCategories);
 
     public Category SelectCategoryStrategy(List<Category> remainingCategories);
 
-    public ScoreAndCategoryAtTurnEnd GetScoreAndCategoryAtTurnEnd(List<Category> remainingCategories);
+    public TurnResults GetTurnResults(List<Category> remainingCategories);
     
     bool GetAbandonChoice();
     void DoesPlayerWantToAbandonGame();

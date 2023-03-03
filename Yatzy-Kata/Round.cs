@@ -23,9 +23,7 @@ public class Round : IRound
             turn.PlayerTurn();
         }
     }
-    
-    //test cahnge 
-    
+
     public RoundOutcomes GetRoundResult()
     {
         var highestScore = _players.Max(player => player.PlayerRoundScore());

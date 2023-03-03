@@ -18,10 +18,10 @@ public class ConsoleUserStrategy : IStrategy
         _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer);
     }
 
-    public ScoreAndCategoryAtTurnEnd CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
+    public TurnResults CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
     {
         var selectedCategory = SelectCategoryStrategy(remainingCategories);
-        return new ScoreAndCategoryAtTurnEnd(selectedCategory.CalculateScore(diceRoll), selectedCategory);
+        return new TurnResults(selectedCategory.CalculateScore(diceRoll), selectedCategory);
     }
 
     public Category SelectCategoryStrategy(List<Category> remainingCategories)
@@ -37,7 +37,7 @@ public class ConsoleUserStrategy : IStrategy
         return remainingCategories[selectedIndex - 1];
     }
 
-    public ScoreAndCategoryAtTurnEnd GetScoreAndCategoryAtTurnEnd(List<Category> remainingCategories)
+    public TurnResults GetTurnResults(List<Category> remainingCategories)
     {
         _diceRollStrategy.RollDice();
         return CalculateScore(_diceRollStrategy.GetDiceHand(), remainingCategories);
