@@ -13,7 +13,7 @@ public class ComputerStrategy : IStrategy
     {
         _abandoned = false;
         _currentDiceRoll = new List<int>();
-        _diceRollStrategy = new ComputerDiceRollStrategy();
+        _diceRollStrategy = new ComputerDiceRollStrategy( new RandomDiceRoll());
     }
     
     public TurnResults CalculateScore(List<int> diceRoll, List<Category> remainingCategories)

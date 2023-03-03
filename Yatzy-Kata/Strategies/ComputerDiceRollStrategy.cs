@@ -8,9 +8,9 @@ public class ComputerDiceRollStrategy : IDiceRollStrategy
     private readonly IRandom _randomDiceRoll;
     private List<int> _diceHand = new();
 
-    public ComputerDiceRollStrategy()
+    public ComputerDiceRollStrategy(IRandom randomDiceRoll)
     {
-        _randomDiceRoll = new RandomDiceRoll();
+        _randomDiceRoll = randomDiceRoll;
     }
     public void RollDice()
     {

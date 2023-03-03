@@ -11,11 +11,11 @@ public class ConsoleDiceRollStrategy : IDiceRollStrategy
     private readonly IWriter _writer;
     private int _reRollCount;
 
-    public ConsoleDiceRollStrategy(IReader reader, IWriter writer)
+    public ConsoleDiceRollStrategy(IReader reader, IWriter writer, IRandom randomDiceRoll)
     {
         _reader = reader;
         _writer = writer;
-        _randomDiceRoll = new RandomDiceRoll();
+        _randomDiceRoll = randomDiceRoll;
     }
     public List<int> GetDiceHand()
     {

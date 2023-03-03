@@ -15,7 +15,7 @@ public class ConsoleUserStrategy : IStrategy
         _reader = reader;
         _writer = writer;
         _abandoned = false;
-        _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer);
+        _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer, new RandomDiceRoll());
     }
 
     public TurnResults CalculateScore(List<int> diceRoll, List<Category> remainingCategories)
