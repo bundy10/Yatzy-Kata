@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Moq;
 using Yatzy_Kata;
 using Yatzy_Kata.Data;
@@ -125,5 +126,34 @@ public class ComputerStrategyTest
 
         //Assert
         Assert.Equal(expectedTurnResult, actualScore);
+    }
+
+    [Fact]
+    public void GivenCalculateTurnResultsIsCalled_WhenNoCategoryIsSuitedToBePicked_ThenTakeTheLowestScoringCategory()
+    {
+        //Arrange
+        _mockDiceRoll.Setup(dieHand => dieHand.GetDiceHand()).Returns(new List<int>{1,1,2,3,1});
+        var remainingCategories = new List<Category> { new Fives(), new Sixes(), new FullHouse() };
+        var expectedTurnResult = new TurnResults(0, new Fives());
+
+        //Act
+        _computerStrategy.CalculateTurnResults(remainingCategories);
+        var actualScore = _computerStrategy.GetTurnResults();
+
+        //Assert
+        actualScore.Should().BeEquivalentTo(expectedTurnResult);
+
+    }
+    
+    
+    [Fact]
+    public void GivenGetAbandonChoiceIsCalled_ComputerPlayerWillAlwaysReturnFalse()
+    {
+        //Act
+        _computerStrategy.DoesPlayerWantToAbandonGame();
+        var actualPlayerAbandonedStatus = _computerStrategy.GetAbandonChoice();
+
+        //Assert
+        Assert.False(actualPlayerAbandonedStatus);
     }
 }

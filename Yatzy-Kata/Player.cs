@@ -19,8 +19,7 @@ public class Player
 
     public void UpdateRecordsAfterTurn(int timeSpentInTurn)
     {
-        if (_turnResults == null) return;
-        _recordHolder.SetRoundScore(_turnResults.Score);
+        _recordHolder.SetRoundScore(_turnResults!.Score);
         _recordHolder.AddToTotalPoints(_turnResults.Score);
         _recordHolder.RemoveUsedCategory(_turnResults.Category);
         _recordHolder.AddToTimeSpentInTurn(timeSpentInTurn);
