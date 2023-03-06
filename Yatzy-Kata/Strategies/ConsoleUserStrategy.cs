@@ -11,12 +11,12 @@ public class ConsoleUserStrategy : IStrategy
     private bool _abandoned;
     private TurnResults? _turnResults;
 
-    public ConsoleUserStrategy(IReader reader, IWriter writer)
+    public ConsoleUserStrategy(IReader reader, IWriter writer, IRandom random)
     {
         _reader = reader;
         _writer = writer;
         _abandoned = false;
-        _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer, new RandomDiceRoll());
+        _diceRollStrategy = new ConsoleDiceRollStrategy(reader, writer, random);
     }
     
     public TurnResults? GetTurnResults()
@@ -40,7 +40,9 @@ public class ConsoleUserStrategy : IStrategy
         int selectedIndex;
         do
         {
-            Console.Write("Enter a number from 1 to {0}: ", remainingCategories.Count);
+            _writer.WriteLine(ConsoleMessages.InvalidCategorySelectionInput);
+            _writer.WriteLine(ConsoleMessages.SelectCategory);
+            _writer.WriteLine(ConsoleMessages.RemainingCategoriesToString(remainingCategories));
         } while (!int.TryParse(_reader.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > remainingCategories.Count);
 
         return remainingCategories[selectedIndex - 1];
@@ -48,7 +50,7 @@ public class ConsoleUserStrategy : IStrategy
 
     public void DoesPlayerWantToAbandonGame()
     {
-        _writer.WriteLine(ConsoleMessages.PlayAgainOrNot);
+        _writer.WriteLine(ConsoleMessages.AbandonOrNot);
         var abandonChoice = _reader.ReadLine();
 
         if (abandonChoice?.ToLowerInvariant() == "y")

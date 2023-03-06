@@ -12,7 +12,8 @@ public static class ConsoleMessages
     public const string SelectWhichDieToReRoll = "Please enter which die to reroll from 1 to 5 for example 324";
     public const string InvalidDieInput = "Please enter numbers between 1 and 5";
     public const string SelectCategory = "Select a category";
-    public const string PlayAgainOrNot = "Do you want to abandon the game? enter y to abandon or any other key to continue";
+    public const string AbandonOrNot = "Do you want to abandon the game? enter y to abandon or any other key to continue";
+    public const string InvalidCategorySelectionInput = "Please Enter A valid Category Number Shown";
 
     public static string RoundCount(int roundNum) => $"Round: {roundNum.ToString()}";
 
