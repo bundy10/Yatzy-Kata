@@ -10,7 +10,7 @@ using Yatzy_Kata.Strategies;
 
 namespace Yatzy_Test;
 
-/*public class RoundTests
+public class RoundTests
 {
     private readonly Round _round;
     private readonly Mock<ITurnFactory> _turnFactoryMock;
@@ -18,78 +18,105 @@ namespace Yatzy_Test;
     private readonly Player _player2;
     private readonly Mock<ITurn> _player1TurnMock;
     private readonly Mock<ITurn> _player2TurnMock;
+    private readonly Mock<IRandom> _mockPlayer1RandomDieRoll;
+    private readonly Mock<IRandom> _mockPlayer2RandomDieRoll;
 
     public RoundTests()
     {
+        _mockPlayer1RandomDieRoll = new Mock<IRandom>();
+        _mockPlayer2RandomDieRoll = new Mock<IRandom>();
         _turnFactoryMock = new Mock<ITurnFactory>();
         _player1TurnMock = new Mock<ITurn>();
         _player2TurnMock = new Mock<ITurn>();
-        _player1 = new Player(new ComputerStrategy());
-        _player2 = new Player(new ComputerStrategy());
-        _round = new Round(new List<IPlayer> { _player1, _player2 }, _turnFactoryMock.Object);
+        _player1 = new Player("bundy", new ComputerStrategy(_mockPlayer1RandomDieRoll.Object));
+        _player2 = new Player("john", new ComputerStrategy(_mockPlayer2RandomDieRoll.Object));
+        _round = new Round(new List<Player> { _player1, _player2 }, _turnFactoryMock.Object);
 
 
         
     }
 
     [Fact]
-    public void GivenARound_WhenPlayRoundIsCalled_ThenPromptsPlayersForTheirTurnResults()
+    public void GivenARound_WhenPlayTurnsIsCalled_ThenPromptsTheTurnFactoryToCreateTurnsForEachPlayerAndEachTurnIsPlayed()
     {
 
         //Arrange
         _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1)).Returns(_player1TurnMock.Object);
         _turnFactoryMock.Setup(turn => turn.CreateTurn(_player2)).Returns(_player2TurnMock.Object);
-        _player1TurnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new TurnResults(new List<int> { 1, 1, 1, 1, 1 }, new Yahtzee())).Verifiable();
-        _player2TurnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new TurnResults(new List<int> { 4, 4, 4, 4, 5 }, new FourOfAKind())).Verifiable();
+        _player1TurnMock.Setup(playerTurn => playerTurn.PlayerTurn()).Verifiable();
+        _player2TurnMock.Setup(playerTurn => playerTurn.PlayerTurn()).Verifiable();
+        
 
         //Act
-        _round.PlayRound();
+        _round.PlayTurns();
 
         //Assert
-        _player1TurnMock.Verify();
-        _player2TurnMock.Verify();
+        _turnFactoryMock.Verify();
     }
     
-    [Fact]
-    public void GivenARound_WhenPlayRoundIsCalled_ThenReturnTheRoundWinner()
+    public static IEnumerable<object[]> RoundWinnerTestObject()
     {
-
-        //Arrange
-        _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1)).Returns(_player1TurnMock.Object);
-        _turnFactoryMock.Setup(turn => turn.CreateTurn(_player2)).Returns(_player2TurnMock.Object);
-        _player1TurnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new TurnResults(new List<int> { 1, 1, 1, 1, 1 }, new Yahtzee()));
-        _player2TurnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new TurnResults(new List<int> { 4, 4, 4, 4, 5 }, new FourOfAKind()));
-        var expectedWinner = new RoundWinner(50, _player1);
-
-        //Act
-        var roundOutcome = _round.PlayRound();
-
-        //Assert
-        Assert.Equal(expectedWinner, roundOutcome);
+        yield return new object[] { 50, new List<int> {5,5,5,5,5}, new List<int> {1,2,3,3,3} };
+        yield return new object[] { 40, new List<int> {1,2,3,4,5}, new List<int> {3,3,3,2,1} };
+        yield return new object[] { 30, new List<int> {1,2,3,4,1}, new List<int> {1,3,3,1,5} };
+        yield return new object[] { 21, new List<int> {4,4,4,4,5}, new List<int> {1,2,3,2,6} };
     }
     
-    [Fact]
-    public void GivenARound_WhenPlayRoundIsCalledAndThereIsATie_ThenReturnARoundTie()
+    [Theory]
+    [MemberData(nameof(RoundWinnerTestObject))]
+    public void GivenARound_WhenGetRoundResultIsCalledWhereThereIsAPlayerThatScoredMorePointsThanOtherPlayers_ThenReturnTheRoundWinner(int score, List<int> diceHandOne, List<int> diceHandTwo)
     {
 
         //Arrange
         _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1)).Returns(_player1TurnMock.Object);
         _turnFactoryMock.Setup(turn => turn.CreateTurn(_player2)).Returns(_player2TurnMock.Object);
-        _player1TurnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new TurnResults(new List<int> { 1, 1, 1, 1, 1 }, new Yahtzee()));
-        _player2TurnMock.Setup(turn => turn.PlayerTurn())
-            .Returns(new TurnResults(new List<int> { 4, 4, 4, 4, 4 }, new Yahtzee()));
-        var expectedRoundTie = new RoundTie(50, new List<IPlayer> { _player1, _player2 });
-
+        _mockPlayer1RandomDieRoll.Setup(diceHand => diceHand.GetDiceHand()).Returns(diceHandOne);
+        _mockPlayer2RandomDieRoll.Setup(diceHand => diceHand.GetDiceHand()).Returns(diceHandTwo);
+        var dummyInt = 10;
+        _player1.CompleteTurn();
+        _player2.CompleteTurn();
+        _player1.UpdateRecordsAfterTurn(dummyInt);
+        _player2.UpdateRecordsAfterTurn(dummyInt);
+        var expectedWinner = new RoundWinner(score, _player1);
+        
         //Act
-        var roundOutcome = _round.PlayRound();
+        _round.PlayTurns();
+        var roundResult = _round.GetRoundResult();
 
         //Assert
-        roundOutcome.Should().BeEquivalentTo(expectedRoundTie);
+        roundResult.Should().BeEquivalentTo(expectedWinner);
     }
+    
+    public static IEnumerable<object[]> RoundTieTestObject()
+    {
+        yield return new object[] { 50, new List<int> {5,5,5,5,5}, new List<int> {5,5,5,5,5} };
+        yield return new object[] { 40, new List<int> {1,2,3,4,5}, new List<int> {1,2,3,4,5} };
+        yield return new object[] { 30, new List<int> {1,2,3,4,1}, new List<int> {1,2,3,4,1} };
+        yield return new object[] { 21, new List<int> {4,4,4,4,5}, new List<int> {4,4,4,4,5} };
+    }
+    
+    [Theory]
+    [MemberData(nameof(RoundTieTestObject))]
+    public void GivenARound_WhenGetRoundResultIsCalledWhereTheHighestScoreIsAccompaniedByTwoOrMorePlayers_ThenReturnARoundTie(int score, List<int> diceHandOne, List<int> diceHandTwo)
+    {
 
-}*/
+        //Arrange
+        _turnFactoryMock.Setup(turn => turn.CreateTurn(_player1)).Returns(_player1TurnMock.Object);
+        _turnFactoryMock.Setup(turn => turn.CreateTurn(_player2)).Returns(_player2TurnMock.Object);
+        _mockPlayer1RandomDieRoll.Setup(diceHand => diceHand.GetDiceHand()).Returns(diceHandOne);
+        _mockPlayer2RandomDieRoll.Setup(diceHand => diceHand.GetDiceHand()).Returns(diceHandTwo);
+        var dummyInt = 10;
+        _player1.CompleteTurn();
+        _player2.CompleteTurn();
+        _player1.UpdateRecordsAfterTurn(dummyInt);
+        _player2.UpdateRecordsAfterTurn(dummyInt);
+        var expectedTie = new RoundTie(score, new List<Player>{_player1, _player2});
+        
+        //Act
+        _round.PlayTurns();
+        var roundResult = _round.GetRoundResult();
+
+        //Assert
+        roundResult.Should().BeEquivalentTo(expectedTie);
+    }
+}
