@@ -28,7 +28,7 @@ public class Game
             IncrementRoundCount();
             PlayRound();
             PrintRoundResult();
-            PlayersDecisionToAbandonGame();
+            PlayersDecisionToAbandonRound();
         }
         PrintFinalResults();
     }
@@ -41,12 +41,12 @@ public class Game
         _roundResult = round.GetRoundResult();
     }
 
-    private void PlayersDecisionToAbandonGame()
+    private void PlayersDecisionToAbandonRound()
     {
         foreach (var player in _players)
         {
-            player.AbandonGameOrNot();
-            if (!player.AbandonedGame()) continue;
+            player.AbandonRoundOrNot();
+            if (!player.AbandonedRound()) continue;
             _roundResult = new RoundOver();
             PrintRoundResult();
         }

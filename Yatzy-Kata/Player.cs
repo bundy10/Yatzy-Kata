@@ -32,12 +32,12 @@ public class Player
         _turnResults = _strategy.GetTurnResults();
     }
 
-    public void AbandonGameOrNot()
+    public void AbandonRoundOrNot()
     {
         _strategy.DoesPlayerWantToAbandonGame();
     }
     
-    public bool AbandonedGame() => _strategy.GetAbandonChoice();
+    public bool AbandonedRound() => _strategy.GetAbandonChoice();
     public int PlayerRoundScore() => _recordHolder.GetRoundScore();
     public int PlayerTotalPoints() => _recordHolder.GetTotalPoints();
     public List<Category> GetRemainingCategories() => _recordHolder.GetRemainingCategories();

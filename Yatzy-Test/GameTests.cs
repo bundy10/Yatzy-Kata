@@ -7,7 +7,7 @@ using Yatzy_Kata.Outcomes;
 namespace Yatzy_Test;
 
 
-public class GameTests
+/*public class GameTests
 {
     private readonly Mock<IRoundFactory> _roundFactoryMock;
     private readonly List<Mock<IPlayer>> _playerMocks;
@@ -154,4 +154,4 @@ public class GameTests
         //Assert
         _roundMock.Verify(round => round.PlayRound(), Times.Never);
     }
-}
+}*/

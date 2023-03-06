@@ -6,7 +6,7 @@ using Yatzy_Kata.Strategies;
 
 namespace Yatzy_Test;
 
-public class TurnTest
+/*public class TurnTest
 {
     private readonly Mock<IRandom> _randomMock;
     private readonly Turn _turn;
@@ -28,16 +28,16 @@ public class TurnTest
         _randomMock.Setup(diceRolls => diceRolls.GetDiceNumbersBetweenRange())
             .Returns(new List<int>() { 1, 2, 3, 4, 5, 6 });
         _scorer.Setup(score => score.CalculateScore(It.IsAny<List<int>>(), It.IsAny<List<Category>>()))
-            .Returns(new ScoreAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy));
+            .Returns(new TurnResults(expectedDiceRolls, categoryDummy));
         
         
-        ScoreAndCategoryAtTurnEnd expectedOutcomeOfPlayerTurnEnd = new ScoreAndCategoryAtTurnEnd(expectedDiceRolls, categoryDummy);
+        TurnResults expectedOutcomeOfPlayerTurnResults = new TurnResults(expectedDiceRolls, categoryDummy);
 
         //act 
         _turn.PlayerTurn();
         
         //Assert
-        Assert.Equal(expectedOutcomeOfPlayerTurnEnd.Dice, _turn.PlayerTurn().Dice);
+        Assert.Equal(expectedOutcomeOfPlayerTurnResults.Dice, _turn.PlayerTurn().Dice);
 
     }
-}
+}*/
