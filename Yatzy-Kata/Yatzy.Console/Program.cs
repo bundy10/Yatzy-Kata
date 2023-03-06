@@ -10,11 +10,11 @@ namespace Yatzy_Kata
     {
         static void Main(string[] args)
         {
-            /*var player1 = new Player("bundy", new ConsoleUserStrategy(new ConsoleReader(), new ConsoleWriter(), new RandomDiceRoll()));*/
             var player1 = new Player("bundy", new ComputerStrategy(new RandomDiceRoll()));
             var player2 = new Player("james", new ComputerStrategy(new RandomDiceRoll()));
+            var player3 = new Player("bundy", new ConsoleUserStrategy(new ConsoleReader(), new ConsoleWriter(), new RandomDiceRoll()));
 
-            List<Player> players = new List<Player> { player1, player2 };
+            List<Player> players = new List<Player> { player1, player2, player3 };
 
             var game = new Game(players, new RoundFactory(new TurnFactory()));
             game.PlayGame();
