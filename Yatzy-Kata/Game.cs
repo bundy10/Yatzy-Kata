@@ -1,6 +1,5 @@
 using Yatzy_Kata.Interfaces;
 using Yatzy_Kata.Outcomes;
-using Yatzy_Kata.Records;
 
 namespace Yatzy_Kata;
 
@@ -23,7 +22,7 @@ public class Game
     public void PlayGame()
     {
         _writer.WriteLine(ConsoleMessages.Welcome);
-        while (!PreviousRoundAbandoned && AreAnyCategoriesLeft())
+        while (!PreviousRoundAbandoned && AreAnyCategoriesLeft() && AreAnyRoundsLeft())
         {
             IncrementRoundCount();
             PlayRound();
@@ -69,5 +68,7 @@ public class Game
     private Player PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.PlayerTotalPoints()).First();
     private bool AreAnyCategoriesLeft() =>
         _players.Any(players => players.GetRemainingCategories().Count != 0);
+
+    private bool AreAnyRoundsLeft() => _roundCount < 13;
     private void IncrementRoundCount() => _roundCount += 1;
 }
