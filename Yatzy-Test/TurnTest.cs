@@ -6,38 +6,31 @@ using Yatzy_Kata.Strategies;
 
 namespace Yatzy_Test;
 
-/*public class TurnTest
+public class TurnTest
 {
-    private readonly Mock<IRandom> _randomMock;
+    private readonly Mock<IRandom> _mockPlayer1RandomDieRoll;
+    private readonly Player _player1;
     private readonly Turn _turn;
-    private readonly Mock<IScorer> _scorer;
 
     public TurnTest()
     {
-        _randomMock = new Mock<IRandom>();
-        _scorer = new Mock<IScorer>();
-        _turn = new Turn(new Player(new ComputerStrategy()));
+        _mockPlayer1RandomDieRoll = new Mock<IRandom>();
+        _player1 = new Player("bundy", new ComputerStrategy(_mockPlayer1RandomDieRoll.Object));
+        _turn = new Turn(_player1);
     }
-
+    
     [Fact]
-    public void GivenATurnIsCreated_WhenPlayerTurnIsCalled_ThenReturnDiceRolls()
+    public void GivenATurn_WhenPlayerTurnIsCalled_ThenUpdatePlayerRecordsAfterTurn()
     {
-        //Arrange
-        var categoryDummy = new Yahtzee();
-        List<int> expectedDiceRolls = new List<int>() {1,2,3,4,5,6};
-        _randomMock.Setup(diceRolls => diceRolls.GetDiceNumbersBetweenRange())
-            .Returns(new List<int>() { 1, 2, 3, 4, 5, 6 });
-        _scorer.Setup(score => score.CalculateScore(It.IsAny<List<int>>(), It.IsAny<List<Category>>()))
-            .Returns(new TurnResults(expectedDiceRolls, categoryDummy));
-        
-        
-        TurnResults expectedOutcomeOfPlayerTurnResults = new TurnResults(expectedDiceRolls, categoryDummy);
+        // Arrange
+        _mockPlayer1RandomDieRoll.Setup(diceHand => diceHand.GetDiceHand()).Returns(new List<int> { 5, 5, 5, 5, 5 });
 
-        //act 
+        // Act
         _turn.PlayerTurn();
-        
-        //Assert
-        Assert.Equal(expectedOutcomeOfPlayerTurnResults.Dice, _turn.PlayerTurn().Dice);
+        var expectedPlayerUpdatedRecords = _player1.PlayerRoundScore() == 50 && _player1.PlayerTotalPoints() == 50 &&
+                                   _player1.GetRemainingCategories().Count == 12;
 
+        // Assert
+        Assert.True(expectedPlayerUpdatedRecords);
     }
-}*/
+}

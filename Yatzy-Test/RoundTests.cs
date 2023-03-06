@@ -31,9 +31,6 @@ public class RoundTests
         _player1 = new Player("bundy", new ComputerStrategy(_mockPlayer1RandomDieRoll.Object));
         _player2 = new Player("john", new ComputerStrategy(_mockPlayer2RandomDieRoll.Object));
         _round = new Round(new List<Player> { _player1, _player2 }, _turnFactoryMock.Object);
-
-
-        
     }
 
     [Fact]
