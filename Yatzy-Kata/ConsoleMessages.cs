@@ -40,5 +40,5 @@ public static class ConsoleMessages
         return result;
     }
 
-    public static string Winner(Player player) => $"Player {player.Name} is the winner! with a total score of {player.PlayerTotalPoints()} ";
+    public static string Winner(Player player) => $"Player {player.Name} is the winner! with a total score of {player.PlayerTotalPoints()} and a total time spent of {player.PlayerTotalTimeSpentInTurns()} seconds ";
 }

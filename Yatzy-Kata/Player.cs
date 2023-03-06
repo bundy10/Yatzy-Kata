@@ -39,5 +39,6 @@ public class Player
     public bool AbandonedRound() => _strategy.GetAbandonChoice();
     public int PlayerRoundScore() => _recordHolder.GetRoundScore();
     public int PlayerTotalPoints() => _recordHolder.GetTotalPoints();
+    public int PlayerTotalTimeSpentInTurns() => _recordHolder.GetTimeSpentInTurns();
     public List<Category> GetRemainingCategories() => _recordHolder.GetRemainingCategories();
 }

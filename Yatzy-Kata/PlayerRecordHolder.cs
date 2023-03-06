@@ -24,6 +24,6 @@ public class PlayerRecordHolder
     public int GetRoundScore() => _roundScore;
     public int GetTotalPoints() => _totalPoints;
     public void AddToTimeSpentInTurn(int timeSpentInTurn) => _timeSpentInTurn += timeSpentInTurn;
-    public int GetTimeSpentInTurn() => _timeSpentInTurn;
+    public int GetTimeSpentInTurns() => _timeSpentInTurn;
 }
 

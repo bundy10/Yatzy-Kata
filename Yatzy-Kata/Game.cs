@@ -64,6 +64,7 @@ public class Game
         _writer.WriteLine(ConsoleMessages.Winner(winner));
         _writer.WriteLine(ConsoleMessages.Farewell);
     }
+    
     private bool PreviousRoundAbandoned => _roundResult == new RoundOver();
     private Player PlayerWithHighestScoreAtEndOfGame() => _players.OrderByDescending(player => player.PlayerTotalPoints()).First();
     private bool AreAnyCategoriesLeft() =>

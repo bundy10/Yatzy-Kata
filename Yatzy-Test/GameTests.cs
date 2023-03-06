@@ -25,6 +25,7 @@ namespace Yatzy_Test;
         _roundMock.Setup(round => round.PlayRound()).Returns(new RoundOutcomes());
         _game = new Game(_playerMocks.Select(playerMock => playerMock.Object), _roundFactoryMock.Object);
     }
+    
     [Fact]
     public void GivenPlayGameIsCalled_ThenGamePromptsPlayerToPlayAgain()
     {
