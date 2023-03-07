@@ -11,7 +11,7 @@ Therefore attempting to test these private methods and properties within the onl
 For Design Approach I decided to Utilize a Factory design pattern for the Logic of the Yatzy-Game itself, where rounds and turns are created by Factories to abstract the object creation process away from the client code. Also I wanted that high-level modules should not depend on low-level modules, but rather both should depend on abstractions.
 For Domain Logic, I decided to encapsulate most data manipulating logic within the player,
 this way The Game logic classes do not need to know what the Player is actually doing but just fork out rounds and turns.
-I think I designed this poorly and maybe should of did the reverse.
+I think I designed this poorly and maybe should of did the reverse. 
 
 
 
