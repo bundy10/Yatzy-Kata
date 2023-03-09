@@ -9,7 +9,7 @@ using Yatzy_Kata.Strategies;
 namespace Yatzy_Test;
 
 
-public class GameTests
+public class PlayGameTests
 {
     private readonly List<Player> _players;
     private readonly Game _game;
@@ -17,7 +17,7 @@ public class GameTests
     private readonly Mock<IRandom> _mockPlayer2RandomDieRoll;
     private readonly Mock<IReader> _mockReader;
 
-    public GameTests()
+    public PlayGameTests()
     {
         _mockReader = new Mock<IReader>();
         _mockPlayer1RandomDieRoll = new Mock<IRandom>();
@@ -30,7 +30,7 @@ public class GameTests
     }
     
     [Fact]
-    public void GivenPlayGameIsCalled_WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenAMaximumOfThirteenRoundsArePlayed()
+    public void WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenAMaximumOfThirteenRoundsArePlayed()
     {
         //Arrange
         var stringWriter = new StringWriter();
@@ -45,7 +45,7 @@ public class GameTests
     }
     
     [Fact]
-    public void GivenPlayGameIsCalled_ThenGamePromptsWelcomeMessage()
+    public void GamePromptsWelcomeMessage()
     {
         //Arrange
         var stringWriter = new StringWriter();
@@ -59,7 +59,7 @@ public class GameTests
     }
 
     [Fact]
-    public void GivenPlayGameIsCalled_WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenThePlayerWithTheMostPointsWillBePromptedAtTheEndOfTheGame()
+    public void WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenThePlayerWithTheMostPointsWillBePromptedAtTheEndOfTheGame()
     {
         //Arrange
         var stringWriter = new StringWriter();
@@ -73,7 +73,7 @@ public class GameTests
     }
     
     [Fact]
-    public void GivenPlayGameIsCalled_WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenPLayersWillHaveNoCategoriesLeft()
+    public void WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenPLayersWillHaveNoCategoriesLeft()
     {
         //Act
         _game.PlayGame();
@@ -99,7 +99,7 @@ public class GameTests
     
     [Theory]
     [MemberData(nameof(TotalPointsScoredWhileDiceHandAlwaysStaysTheSameTestObjects))]
-    public void GivenPlayGameIsCalled_WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenPLayersWillHaveTheirTotalPointsUpdatedAccordingly(int expectedTotalPointsPlayer1, int expectedTotalPointsPlayer2, List<int> constantDiceHandPlayer1, List<int> constantDiceHandPlayer2 )
+    public void WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenPLayersWillHaveTheirTotalPointsUpdatedAccordingly(int expectedTotalPointsPlayer1, int expectedTotalPointsPlayer2, List<int> constantDiceHandPlayer1, List<int> constantDiceHandPlayer2 )
     {
         //Arrange
         _mockPlayer1RandomDieRoll.Setup(diceHand => diceHand.GetDiceHand()).Returns(constantDiceHandPlayer1);
@@ -116,7 +116,7 @@ public class GameTests
     }
     
     [Fact]
-    public void GivenPlayGameIsCalled_WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenPlayersAbandonChoiceWillBeFalseAtEndOfTheGame()
+    public void WhileEveryPlayerPLaysTillNoCategoriesLeft_ThenPlayersAbandonChoiceWillBeFalseAtEndOfTheGame()
     {
         //Act
         _game.PlayGame();
@@ -128,7 +128,7 @@ public class GameTests
         Assert.False(abandonChoicePlayer2);
     }
 
-    [Fact] public void GivenPlayGameIsCalled_WhenAPlayerAbandonsAfterTheStartingRound_ThenGameWillEndImmediately()
+    [Fact] public void WhenAPlayerAbandonsAfterTheStartingRound_ThenGameWillEndImmediately()
     {
         //Arrange
         var player1 = new Player("bundy", new ConsoleUserStrategy(_mockReader.Object, new ConsoleWriter(), new RandomDiceRoll()));
