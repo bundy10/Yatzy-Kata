@@ -35,7 +35,7 @@ public class ConsoleDiceRollStrategyTest
 
     }
 
-    public static IEnumerable<object[]> ReRolledDicesTestObjects()
+    private static IEnumerable<object[]> ReRolledDicesTestObjects()
     {
         yield return new object[] { 1, "1", new List<int> {1,6,6,6,6} };
         yield return new object[] { 2, "12", new List<int> {2,2,6,6,6} };

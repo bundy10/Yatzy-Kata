@@ -98,7 +98,7 @@ public class ConsoleUserStrategyTest
         Assert.Contains(ConsoleMessages.InvalidCategorySelectionInput, stringWriter.ToString());
     }
     
-    public static IEnumerable<object[]> ScoreTestObjects()
+    private static IEnumerable<object[]> ScoreTestObjects()
     {
         yield return new object[] { 50, "3", new List<int>{5,5,5,5,5}};
         yield return new object[] { 5, "2", new List<int>{1,1,1,1,1}};
@@ -123,7 +123,7 @@ public class ConsoleUserStrategyTest
     }
     
     
-    public static IEnumerable<object[]> CategorySelectionTestObjects()
+    private static IEnumerable<object[]> CategorySelectionTestObjects()
     {
         yield return new object[] { "3", new Yahtzee()};
         yield return new object[] { "2", new Aces()};

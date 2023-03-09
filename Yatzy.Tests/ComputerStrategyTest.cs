@@ -20,7 +20,7 @@ public class ComputerStrategyTest
         _remainingCategories = new List<Category>() { new Aces(), new Twos(), new Threes(), new Fours(), new Fives(), new Sixes(), new Chance(), new ThreeOfAKind(), new FourOfAKind(), new FullHouse(), new SmallStraight(), new LargeStraight(), new Yahtzee()};
     }
 
-    public static IEnumerable<object[]> UpperCategoryTest()
+    private static IEnumerable<object[]> UpperCategoryTest()
     {
         yield return new object[] { 50, new Yahtzee(), new List<int> {5,5,5,5,5} };
         yield return new object[] { 40, new LargeStraight(), new List<int> {2,3,4,5,6} };
@@ -47,7 +47,7 @@ public class ComputerStrategyTest
         Assert.Equal(expectedTurnResult, actualScore);
     }
     
-    public static IEnumerable<object[]> LowerCategoryTest()
+    private static IEnumerable<object[]> LowerCategoryTest()
     {
         yield return new object[] { 5, new Aces(), new List<int> {1,1,1,1,1} };
         yield return new object[] { 10, new Twos(), new List<int> {2,2,2,2,2} };
@@ -78,7 +78,7 @@ public class ComputerStrategyTest
         Assert.Equal(expectedTurnResult, actualScore);
     }
     
-    public static IEnumerable<object[]> LowerCategoryIfUpperCategoryIsNotSuitableTest()
+    private static IEnumerable<object[]> LowerCategoryIfUpperCategoryIsNotSuitableTest()
     {
         yield return new object[] { 6, new Sixes(), new List<int> {6,4,3,4,1} };
         yield return new object[] { 5, new Fives(), new List<int> {5,4,1,1,2} };
@@ -104,7 +104,7 @@ public class ComputerStrategyTest
         Assert.Equal(expectedTurnResult, actualScore);
     }
     
-    public static IEnumerable<object[]> IfThereIsNoSuitableUpperCategoryThenChanceWillBeTakenBeforeAnyLowerCategoriesTestObjects()
+    private static IEnumerable<object[]> IfThereIsNoSuitableUpperCategoryThenChanceWillBeTakenBeforeAnyLowerCategoriesTestObjects()
     {
         yield return new object[] { 18, new Chance(), new List<int> {6,4,3,4,1} };
         yield return new object[] { 13, new Chance(), new List<int> {5,4,1,1,2} };

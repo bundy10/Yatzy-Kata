@@ -85,7 +85,7 @@ public class GameTests
         Assert.True(noCategoriesLeftAtEndOfGamePlayer2);
     }
     
-    public static IEnumerable<object[]> TotalPointsScoredWhileDiceHandAlwaysStaysTheSameTestObjects()
+    private static IEnumerable<object[]> TotalPointsScoredWhileDiceHandAlwaysStaysTheSameTestObjects()
     {
         yield return new object[] { 150, 70, new List<int>{5,5,5,5,5}, new List<int>{6,2,3,4,5}};
         yield return new object[] { 54, 70, new List<int>{3,2,1,4,2}, new List<int>{6,5,4,2,3}};

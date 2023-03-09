@@ -51,7 +51,7 @@ public class RoundTests
         _turnFactoryMock.Verify();
     }
     
-    public static IEnumerable<object[]> RoundWinnerTestObject()
+    private static IEnumerable<object[]> RoundWinnerTestObject()
     {
         yield return new object[] { 50, new List<int> {5,5,5,5,5}, new List<int> {1,2,3,3,3} };
         yield return new object[] { 40, new List<int> {1,2,3,4,5}, new List<int> {3,3,3,2,1} };
@@ -84,7 +84,7 @@ public class RoundTests
         roundResult.Should().BeEquivalentTo(expectedWinner);
     }
     
-    public static IEnumerable<object[]> RoundTieTestObject()
+    private static IEnumerable<object[]> RoundTieTestObject()
     {
         yield return new object[] { 50, new List<int> {5,5,5,5,5}, new List<int> {5,5,5,5,5} };
         yield return new object[] { 40, new List<int> {1,2,3,4,5}, new List<int> {1,2,3,4,5} };
