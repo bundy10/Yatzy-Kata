@@ -27,7 +27,7 @@ public class Game
             IncrementRoundCount();
             PlayRound();
             PrintRoundResult();
-            PlayersDecisionToAbandonRound();
+            PlayersDecisionToAbandonNextRound();
         }
         PrintFinalResults();
     }
@@ -40,7 +40,7 @@ public class Game
         _roundResult = round.GetRoundResult();
     }
 
-    private void PlayersDecisionToAbandonRound()
+    private void PlayersDecisionToAbandonNextRound()
     {
         foreach (var player in _players)
         {
