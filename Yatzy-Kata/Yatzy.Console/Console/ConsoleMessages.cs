@@ -22,9 +22,9 @@ public static class ConsoleMessages
         return string.Join(",", diceHand.Select(d => "d" + d));
     }
 
-    public static string RemainingCategoriesToString(IEnumerable<Category> remainingCategories)
+    public static string RemainingCategoriesToString(IEnumerable<Category>? remainingCategories)
     {
-        var categoryNames = remainingCategories.Select((category, index) => $"{index + 1}. {category.GetType().Name}");
+        var categoryNames = remainingCategories!.Select((category, index) => $"{index + 1}. {category.GetType().Name}");
         return string.Join("\n", categoryNames);
     }
 

@@ -10,6 +10,7 @@ public class ConsoleUserStrategy : IStrategy
     private readonly IWriter _writer;
     private bool _abandoned;
     private TurnResults? _turnResults;
+    private List<Category>? _categoriesAvailable;
 
     public ConsoleUserStrategy(IReader reader, IWriter writer, IRandom random)
     {
@@ -26,26 +27,27 @@ public class ConsoleUserStrategy : IStrategy
 
     public void CalculateTurnResults(List<Category> remainingCategories)
     {
+        _categoriesAvailable = remainingCategories;
         _diceRollStrategy.RollDice();
         var diceRoll = _diceRollStrategy.GetDiceHand();
-        var selectedCategory = SelectCategoryStrategy(remainingCategories);
+        var selectedCategory = SelectCategoryStrategy();
         var score = selectedCategory.CalculateScore(diceRoll);
         _turnResults = new TurnResults(score, selectedCategory);
     }
 
-    private Category SelectCategoryStrategy(List<Category> remainingCategories)
+    private Category SelectCategoryStrategy()
     {
         _writer.WriteLine(ConsoleMessages.SelectCategory);
-        _writer.WriteLine(ConsoleMessages.RemainingCategoriesToString(remainingCategories));
+        _writer.WriteLine(ConsoleMessages.RemainingCategoriesToString(_categoriesAvailable));
         int selectedIndex;
         do
         {
             _writer.WriteLine(ConsoleMessages.InvalidCategorySelectionInput);
             _writer.WriteLine(ConsoleMessages.SelectCategory);
-            _writer.WriteLine(ConsoleMessages.RemainingCategoriesToString(remainingCategories));
-        } while (!int.TryParse(_reader.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > remainingCategories.Count);
+            _writer.WriteLine(ConsoleMessages.RemainingCategoriesToString(_categoriesAvailable));
+        } while (!int.TryParse(_reader.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > _categoriesAvailable!.Count);
 
-        return remainingCategories[selectedIndex - 1];
+        return _categoriesAvailable[selectedIndex - 1];
     }
 
     public void DoesPlayerWantToAbandonGame()

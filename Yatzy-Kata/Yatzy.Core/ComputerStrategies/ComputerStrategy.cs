@@ -9,6 +9,7 @@ public class ComputerStrategy : IStrategy
     private readonly ComputerDiceRollStrategy _diceRollStrategy;
     private bool _abandoned;
     private TurnResults? _turnResults;
+    private List<Category>? _categoriesAvailable;
 
     public ComputerStrategy(IRandom randomDiceRoll)
     {
@@ -24,23 +25,24 @@ public class ComputerStrategy : IStrategy
     
     public void CalculateTurnResults(List<Category> remainingCategories)
     {
+        _categoriesAvailable = remainingCategories;
         _diceRollStrategy.RollDice();
         _currentDiceRoll = _diceRollStrategy.GetDiceHand();
-        var selectedCategory = SelectCategoryStrategy(remainingCategories);
+        var selectedCategory = SelectCategoryStrategy();
         var score = selectedCategory.CalculateScore(_currentDiceRoll);
         _turnResults = new TurnResults(score, selectedCategory);
     }
 
-    private Category SelectCategoryStrategy(List<Category> remainingCategories)
+    private Category SelectCategoryStrategy()
     {
-        for (var i = remainingCategories.Count - 1; i >= 0; i--)
+        for (var i = _categoriesAvailable!.Count - 1; i >= 0; i--)
         {
-            if (remainingCategories[i].CalculateScore(_currentDiceRoll) > 0)
+            if (_categoriesAvailable[i].CalculateScore(_currentDiceRoll) > 0)
             {
-                return remainingCategories[i];
+                return _categoriesAvailable[i];
             }
         }
-        return remainingCategories[0];
+        return _categoriesAvailable[0];
     }
     
     public bool GetAbandonChoice()
